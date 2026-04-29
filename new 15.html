@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DPW | Secure Personnel Access</title>
+	<link rel="icon" type="image/png" href="DPW.png">
+    <link rel="shortcut icon" href="DPW.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@500&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .login-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            width: 100%;
+            max-width: 440px;
+            padding: 3rem;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-field {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 2px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .input-field:focus {
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.1);
+        }
+
+        #login-status {
+            display: none;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 0.75rem;
+            border-radius: 2px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="items-center justify-center">
+
+    <div class="login-card">
+        <header class="text-center mb-10">
+            <div class="inline-block w-14 h-14 bg-blue-900 text-white flex items-center justify-center font-bold rounded mb-6">DPW</div>
+            <h1 class="text-2xl font-black text-slate-900 uppercase tracking-tight">Staff Intranet</h1>
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-2">Department of Prehistoric Wildlife</p>
+        </header>
+
+        <div id="login-status"></div>
+
+        <form id="login-form" class="space-y-6">
+            <div>
+                <label class="block text-[10px] font-black text-slate-500 uppercase mb-2 tracking-widest">Personnel Identification</label>
+                <input type="text" id="personnel-id" placeholder="DPW-ID-0000" class="input-field font-mono text-sm" required>
+            </div>
+
+            <div>
+                <label class="block text-[10px] font-black text-slate-500 uppercase mb-2 tracking-widest">Security Clearance Key</label>
+                <input type="password" id="clearance-key" placeholder="••••••••••••" class="input-field font-mono text-sm" required>
+            </div>
+
+            <div class="pt-2">
+                <button type="submit" class="w-full bg-blue-900 hover:bg-slate-800 text-white font-black py-4 rounded-sm uppercase tracking-widest transition-all shadow-md active:scale-[0.98]">
+                    Authorize Access
+                </button>
+            </div>
+        </form>
+
+        <div class="mt-10 pt-8 border-t border-slate-100">
+            <div class="bg-red-50 border border-red-100 p-4 rounded mb-6 text-center">
+                <p class="text-[10px] text-red-700 font-bold uppercase leading-tight">
+                    Department Property: Unauthorized use is subject to criminal prosecution under the Prehistoric Security Act.
+                </p>
+            </div>
+            
+            <div class="flex justify-center gap-6 text-[11px] font-bold text-blue-900 uppercase">
+                <a href="new 14.html" class="hover:underline">Legal Portal</a>
+                <a href="/DPW/index.html" class="hover:underline">Public Site</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-8 text-[10px] font-mono text-slate-400 uppercase tracking-widest">
+        Node: DC-HQ-ADMIN-01 // Secure TLS 1.3
+    </footer>
+
+   <script>
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const idInput = document.getElementById('personnel-id').value;
+        const keyInput = document.getElementById('clearance-key').value;
+        const statusDiv = document.getElementById('login-status');
+        const submitBtn = e.target.querySelector('button');
+
+        // 1. Define your authorized users here
+        const authorizedUsers = {
+            'DPW-ADMIN': 'SECURE2026',
+            'DPW-RANGER-01': 'VELOCIRAPTOR',
+            'DPW-BIO-SMITH': 'PALEONTOLOGY',
+            'DPW-DIRECTOR': 'GENESIS-77'
+        };
+
+        // Set button to "loading" state
+        submitBtn.innerText = "Authenticating...";
+        submitBtn.disabled = true;
+
+        // Simulate server handshake delay
+        setTimeout(() => {
+            // 2. Check if the ID exists and the Key matches
+            if (authorizedUsers[idInput] && authorizedUsers[idInput] === keyInput) {
+                statusDiv.style.display = 'block';
+                statusDiv.style.backgroundColor = '#dcfce7';
+                statusDiv.style.color = '#166534';
+                statusDiv.style.border = '1px solid #bbf7d0';
+                statusDiv.innerText = "Authorization Successful. Redirecting...";
+                
+                setTimeout(() => {
+                    window.location.href = '/DPW/index.html';
+                }, 1500);
+            } else {
+                statusDiv.style.display = 'block';
+                statusDiv.style.backgroundColor = '#fee2e2';
+                statusDiv.style.color = '#991b1b';
+                statusDiv.style.border = '1px solid #fecaca';
+                statusDiv.innerText = "Invalid Credentials. Access Denied.";
+                
+                // Reset button
+                submitBtn.innerText = "Authorize Access";
+                submitBtn.disabled = false;
+            }
+        }, 1000);
+    });
+</script>
+</body>
+</html>

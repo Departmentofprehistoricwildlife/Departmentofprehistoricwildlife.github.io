@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DPW Field Manual | Official Archive</title>
+	<link rel="icon" type="image/png" href="DPW.png">
+    <link rel="shortcut icon" href="DPW.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap');
+
+        :root {
+            --dpw-gold: #d97706;
+            --dpw-danger: #dc2626;
+            --dpw-bg: #ffffff;
+            --dpw-text: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dpw-bg);
+            color: var(--dpw-text);
+            overflow-x: hidden;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        .glass-panel {
+            background: rgba(241, 245, 249, 0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(15, 23, 42, 0.1);
+            border-radius: 0.5rem;
+        }
+
+        .creature-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .creature-card:hover {
+            border-color: var(--dpw-gold);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .hazard-stripe {
+            background: repeating-linear-gradient(
+                45deg,
+                #fbbf24,
+                #fbbf24 10px,
+                #000 10px,
+                #000 20px
+            );
+        }
+
+        .status-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .tab-btn {
+            border: 1px solid #e2e8f0;
+            color: #475569;
+        }
+        .tab-btn.active-tab {
+            background-color: #fef3c7;
+            border-left: 4px solid var(--dpw-gold);
+            color: var(--dpw-text);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <header class="max-w-6xl mx-auto mb-8 border-b-2 border-black pb-6">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+            <div>
+                <h1 class="text-[10px] md:text-xs mono text-amber-600 tracking-[0.3em] font-bold uppercase mb-2">Internal Use Only // Level 4 Clearance</h1>
+                <h2 class="text-3xl md:text-6xl font-extrabold tracking-tighter uppercase text-black leading-none">Field Manual <span class="text-amber-600">v2.4</span></h2>
+                <p class="text-sm md:text-slate-500 mt-2 italic font-medium">Department of Prehistoric Wildlife (DPW) - Identification & Containment Division</p>
+            </div>
+            <div class="text-left md:text-right mono text-[10px] md:text-xs text-slate-500 w-full md:w-auto">
+                <p class="font-bold text-black">STATION: SECTOR-7G</p>
+                <p id="timestamp" class="text-slate-600"></p>
+                <div class="flex items-center gap-2 mt-2 md:justify-end">
+                    <span class="w-2 h-2 rounded-full bg-green-600 status-pulse"></span>
+                    <span class="text-green-700 font-bold">ENCRYPTED CONNECTION</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
+        
+        <aside class="lg:col-span-1 space-y-4">
+            <nav class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-2">
+                <button onclick="switchTab(event, 'species')" class="tab-btn active-tab w-full text-left p-3 glass-panel hover:bg-slate-100 transition-all font-bold text-xs md:text-sm">
+                    <i class="fas fa-dragon mr-2"></i> SPECIES DATABASE
+                </button>
+                <button onclick="switchTab(event, 'safety')" class="tab-btn w-full text-left p-3 glass-panel hover:bg-slate-100 transition-all font-bold text-xs md:text-sm">
+                    <i class="fas fa-shield-alt mr-2"></i> SAFETY PROTOCOLS
+                </button>
+                <button onclick="switchTab(event, 'gear')" class="tab-btn w-full text-left p-3 glass-panel hover:bg-slate-100 transition-all font-bold text-xs md:text-sm">
+                    <i class="fas fa-tools mr-2"></i> FIELD GEAR
+                </button>
+            </nav>
+
+            <div class="p-4 glass-panel border-red-200 bg-red-50">
+                <h3 class="text-red-600 font-black mb-2 uppercase text-[10px] tracking-widest"><i class="fas fa-exclamation-triangle mr-1"></i> Emergency</h3>
+                <p class="text-xs md:text-sm text-red-900 mb-4 font-medium">In case of containment breach, initiate Protocol 9 immediately.Sever all external network uplinks to prevent automated distress signals from reaching civilian channels.</p>
+                <button class="w-full py-2 bg-black hover:bg-slate-800 text-white font-bold rounded text-[10px] md:text-sm transition-colors uppercase">Broadcast SOS</button>
+            </div>
+        </aside>
+
+        <section class="lg:col-span-3">
+            
+            <div id="species" class="tab-content active space-y-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl md:text-2xl font-black tracking-tight text-black">PRIORITY TARGETS</h3>
+                    <div class="text-[10px] mono px-2 py-1 bg-slate-200 text-slate-700 rounded font-bold uppercase">6 RECORDS FOUND</div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-4 creature-card rounded-lg">
+                        <div class="h-40 md:h-48 w-full bg-slate-200 rounded mb-4 overflow-hidden relative">
+                            <div class="absolute inset-0 flex items-center justify-center text-slate-400">
+                                <i class="fas fa-dragon text-5xl md:text-6xl"></i>
+                            </div>
+                            <div class="absolute bottom-2 left-2 bg-black/80 text-white px-2 py-1 text-[10px] mono">ID: TYR-01</div>
+                            <div class="absolute top-2 right-2 px-2 py-1 bg-red-600 text-white text-[10px] font-bold">ALPHA PREDATOR</div>
+                        </div>
+                        <h4 class="text-xl font-black mb-1 italic text-black">Tyrannosaurus rex</h4>
+                        <p class="text-xs text-amber-700 mono mb-3 uppercase font-bold tracking-tighter">Threat Level: Catastrophic</p>
+                        <ul class="text-sm space-y-2 text-slate-600">
+                            <li><i class="fas fa-eye mr-2 text-amber-600"></i> <span class="font-bold text-slate-800">Vision:</span> Tyrannosaurus rex possessed exceptional vision, far superior to modern birds of prey and up to 13 times better than humans, shattering the "movement-based" myth. Their forward-facing, softball-sized eyes provided superior depth perception.</li>
+                            <li><i class="fas fa-bolt mr-2 text-amber-600"></i> <span class="font-bold text-slate-800">Speed:</span> 15-25 mph bursts</li>
+                            <li><i class="fas fa-skull mr-2 text-amber-600"></i> <span class="font-bold text-slate-800">Note:</span> Do not use flash photography.</li>
+                        </ul>
+                    </div>
+
+                    <div class="p-4 creature-card rounded-lg">
+                        <div class="h-40 md:h-48 w-full bg-slate-200 rounded mb-4 overflow-hidden relative">
+                            <div class="absolute inset-0 flex items-center justify-center text-slate-400">
+                                <i class="fas fa-feather-alt text-5xl md:text-6xl"></i>
+                            </div>
+                            <div class="absolute bottom-2 left-2 bg-black/80 text-white px-2 py-1 text-[10px] mono">ID: VEL-09</div>
+                            <div class="absolute top-2 right-2 px-2 py-1 bg-orange-600 text-white text-[10px] font-bold">PACK HUNTER</div>
+                        </div>
+                        <h4 class="text-xl font-black mb-1 italic text-black">Velociraptor mongoliensis</h4>
+                        <p class="text-xs text-orange-700 mono mb-3 uppercase font-bold tracking-tighter">Threat Level: High</p>
+                        <ul class="text-sm space-y-2 text-slate-600">
+                            <li><i class="fas fa-brain mr-2 text-orange-600"></i> <span class="font-bold text-slate-800">IQ:</span> Extremely High,Velociraptor mongoliensis was among the most intelligent dinosaurs. Its intelligence is estimated to be roughly comparable to that of modern birds of prey.</li>
+                            <li><i class="fas fa-users mr-2 text-orange-600"></i> <span class="font-bold text-slate-800">Behavior:</span> Flanking maneuvers</li>
+                            <li><i class="fas fa-exclamation-circle mr-2 text-orange-600"></i> <span class="font-bold text-slate-800">Note:</span> If you see one, check your flank.</li>
+                        </ul>
+                    </div>
+
+                     <div class="p-4 creature-card rounded-lg">
+                        <div class="h-40 md:h-48 w-full bg-slate-200 rounded mb-4 overflow-hidden relative">
+                            <div class="absolute inset-0 flex items-center justify-center text-slate-400">
+                                <i class="fas fa-water text-5xl md:text-6xl"></i>
+                            </div>
+                            <div class="absolute bottom-2 left-2 bg-black/80 text-white px-2 py-1 text-[10px] mono">ID: MOS-04</div>
+                            <div class="absolute top-2 right-2 px-2 py-1 bg-blue-700 text-white text-[10px] font-bold">AQUATIC APEX</div>
+                        </div>
+                        <h4 class="text-xl font-black mb-1 italic text-black">Mosasaurus</h4>
+                        <p class="text-xs text-blue-700 mono mb-3 uppercase font-bold tracking-tighter">Threat Level: Oceanic Warning</p>
+                        <ul class="text-sm space-y-2 text-slate-600">
+                            <li><i class="fas fa-tint mr-2 text-blue-600"></i> <span class="font-bold text-slate-800">Habitat:</span>Mosasaurus lives in shallow, warm coastal waters, inland seas, and open ocean environments worldwide,As top predators, they inhabited diverse marine zones across North America, Europe, Africa, Antarctica, and South America. </li>
+                            <li><i class="fas fa-arrows-alt-v mr-2 text-blue-600"></i> <span class="font-bold text-slate-800">Length:</span> 50-60 feet</li>
+                            <li><i class="fas fa-anchor mr-2 text-blue-600"></i> <span class="font-bold text-slate-800">Note:</span> Maintain 500m distance from ripples.</li>
+                        </ul>
+                    </div>
+
+                    <div class="p-4 creature-card rounded-lg">
+                        <div class="h-40 md:h-48 w-full bg-slate-200 rounded mb-4 overflow-hidden relative">
+                            <div class="absolute inset-0 flex items-center justify-center text-slate-400">
+                                <i class="fas fa-leaf text-5xl md:text-6xl"></i>
+                            </div>
+                            <div class="absolute bottom-2 left-2 bg-black/80 text-white px-2 py-1 text-[10px] mono">ID: TRI-12</div>
+                            <div class="absolute top-2 right-2 px-2 py-1 bg-green-700 text-white text-[10px] font-bold">TERRITORIAL</div>
+                        </div>
+                        <h4 class="text-xl font-black mb-1 italic text-black">Triceratops horridus</h4>
+                        <p class="text-xs text-green-800 mono mb-3 uppercase font-bold tracking-tighter">Threat Level: Moderate</p>
+                        <ul class="text-sm space-y-2 text-slate-600">
+                            <li><i class="fas fa-shield-virus mr-2 text-green-600"></i> <span class="font-bold text-slate-800">Defense:</span> Triceratops horridus was a heavily built herbivore, approximately 9 meters (30 ft) long and 6–12 tons,Its habitat was characterized by lush, subtropical coastal plains and floodplains, particularly in North America.</li>
+                            <li><i class="fas fa-heartbeat mr-2 text-green-600"></i> <span class="font-bold text-slate-800">Temper:</span> Defensive</li>
+                            <li><i class="fas fa-info-circle mr-2 text-green-600"></i> <span class="font-bold text-slate-800">Note:</span> Avoid bright colors near nests.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="safety" class="tab-content space-y-6">
+                <div class="hazard-stripe h-4 w-full mb-6"></div>
+                <h3 class="text-2xl md:text-3xl font-black italic tracking-tighter text-black uppercase">Survival Protocols</h3>
+                
+                <div class="space-y-4">
+                    <div class="p-6 border-l-4 border-amber-500 bg-amber-50 rounded-r-lg border-y border-r border-slate-200">
+                        <h4 class="text-lg md:text-xl font-black text-amber-700 mb-2 uppercase">Protocol 1: Scent Masking</h4>
+                        <p class="text-xs md:text-sm text-slate-800 leading-relaxed font-medium">Most theropods possess olfactory bulbs 40x more sensitive than bloodhounds. Agents must apply DPW pheromone suppressants every 4 hours.Olfactory acuity was highest in tyrannosaurids and dromaeosaurids (raptors), allowing them to detect prey or food from a distance.</p>
+                    </div>
+
+                    <div class="p-6 border-l-4 border-red-600 bg-red-50 rounded-r-lg border-y border-r border-slate-200">
+                        <h4 class="text-lg md:text-xl font-black text-red-700 mb-2 uppercase">Protocol 2: Visual Deterrents</h4>
+                        <p class="text-xs md:text-sm text-slate-800 leading-relaxed font-medium">High-intensity magnesium flares are the only proven deterrent for nocturnal hunters. Keep three active flares in your harness.Magnesium flares act as a powerful visual deterrent by producing intense light (up to 12,000 candles) that can startle and repel dinosaurs.</p>
+                    </div>
+
+                    <div class="p-6 border-l-4 border-blue-600 bg-blue-50 rounded-r-lg border-y border-r border-slate-200">
+                        <h4 class="text-lg md:text-xl font-black text-blue-700 mb-2 uppercase">Protocol 3: Night Travel</h4>
+                        <p class="text-xs md:text-sm text-slate-800 leading-relaxed font-medium">DO NOT MOVE AT NIGHT. Predators hold a significant sensory advantage in low light. Secure a "nest" at least 15 feet high before sunset.Moving at night in wilderness areas is generally unsafe due to severe limitations in human vision compared to nocturnal predators, who possess superior light-gathering eyes and enhanced hearing.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="gear" class="tab-content space-y-6">
+                <h3 class="text-2xl md:text-3xl font-black italic tracking-tighter text-black uppercase">Standard Issue Equipment</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg text-center">
+                        <div class="text-blue-700 text-2xl md:text-3xl mb-2"><i class="fas fa-satellite-dish"></i></div>
+                        <h5 class="font-black text-black mb-1 uppercase text-xs">Mark IV PING</h5>
+                        <p class="text-[10px] text-slate-600 italic">Satellite uplink for bio-tracking.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg text-center">
+                        <div class="text-green-700 text-2xl md:text-3xl mb-2"><i class="fas fa-syringe"></i></div>
+                        <h5 class="font-black text-black mb-1 uppercase text-xs">Tranq-Kit 500</h5>
+                        <p class="text-[10px] text-slate-600 italic">Neurotoxin for large theropods.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg text-center">
+                        <div class="text-amber-700 text-2xl md:text-3xl mb-2"><i class="fas fa-walking"></i></div>
+                        <h5 class="font-black text-black mb-1 uppercase text-xs">Ghillie Mesh</h5>
+                        <p class="text-[10px] text-slate-600 italic">Visual and thermal IR camouflage.</p>
+                    </div>
+                </div>
+                
+                <div class="mt-8 p-6 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg">
+                    <h4 class="mono text-xs md:text-sm mb-4 font-black text-black uppercase"><i class="fas fa-clipboard-list mr-2"></i> Field Inventory Checklist</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px] md:text-xs mono font-bold text-slate-800">
+                        <label class="flex items-center gap-2"><input type="checkbox" class="accent-black w-3 h-3"> RATIONS (5 DAYS)</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" class="accent-black w-3 h-3"> WATER FILTER</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" class="accent-black w-3 h-3"> BIO-HAZ SUIT</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" class="accent-black w-3 h-3"> FLARE GUN</label>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="max-w-6xl mx-auto mt-12 pt-6 border-t-2 border-black text-slate-500 flex flex-col md:flex-row justify-between gap-4 text-[10px] mono uppercase font-bold">
+        <div class="text-black">&copy; 2026 DPW - Wildlife Management Division</div>
+        <div class="flex flex-wrap gap-4">
+            <a href="new 6.html" class="hover:text-amber-600 transition-colors">Privacy Policy</a>
+            <a href="new 9.html" class="hover:text-amber-600 transition-colors">Agent Conduct Code</a>
+            <a href="new 10.html" class="hover:text-red-600 transition-colors">Purge Data</a>
+        </div>
+    </footer>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('timestamp').innerText = 'LOG_TIME: ' + now.toISOString().replace('T', ' ').substring(0, 19);
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function switchTab(event, tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active-tab');
+            });
+
+            event.currentTarget.classList.add('active-tab');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DPW | Sanctuary Maps & Sector Intel</title>
+	<link rel="icon" type="image/png" href="DPW.png">
+    <link rel="shortcut icon" href="DPW.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto+Mono:wght@500&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .sector-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .sector-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .map-placeholder {
+            background: #1e293b;
+            height: 200px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .grid-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .topo-line {
+            position: absolute;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="py-12 px-4">
+
+    <nav class="max-w-6xl mx-auto mb-8 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-blue-900 flex items-center justify-center text-white font-bold rounded">DPW</div>
+            <span class="font-black text-blue-900 uppercase tracking-tighter text-sm">Geospatial Division</span>
+        </div>
+        <div class="flex gap-4 text-xs font-bold uppercase">
+            <a href="new 3.html" class="text-blue-700 hover:underline">Emergency Ops</a>
+            <a href="new 12.html" class="text-blue-700 hover:underline">FOIA Records</a>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto">
+        <header class="mb-12">
+            <h1 class="text-4xl font-black text-slate-900 uppercase italic tracking-tight">Sanctuary Sector Maps</h1>
+            <p class="text-slate-500 font-mono text-sm uppercase mt-2">Current System Status: <span class="text-green-600 font-bold">Operational</span> | Last Update: T+ 04:00</p>
+        </header>
+
+        <div class="bg-slate-900 rounded-xl p-4 mb-12 shadow-2xl border-4 border-slate-800">
+            <div class="flex justify-between items-center mb-4 px-2">
+                <span class="text-white text-xs font-bold uppercase tracking-widest">Global Sanctuary Feed [SECURE]</span>
+                <div class="flex gap-4">
+                    <span class="text-green-400 text-[10px] font-mono animate-pulse">● LIVE TELEMETRY</span>
+                    <span class="text-slate-400 text-[10px] font-mono uppercase">Zoom: 1:50,000</span>
+                </div>
+            </div>
+            
+            <div class="w-full h-[500px] bg-slate-800 rounded relative flex items-center justify-center overflow-hidden">
+                <div class="grid-lines"></div>
+                <div class="absolute w-64 h-64 border-2 border-blue-500/20 rounded-full"></div>
+                <div class="absolute w-96 h-96 border border-blue-500/10 rounded-full"></div>
+                
+                <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+                    <div class="w-4 h-4 bg-red-600 rounded-full animate-ping mb-2 mx-auto"></div>
+                    <div class="bg-red-600/90 text-white text-[10px] font-bold px-2 py-1 rounded uppercase">Sector 7B: Breach Active</div>
+                </div>
+
+                <div class="absolute bottom-4 left-4 bg-slate-900/80 p-3 rounded border border-slate-700">
+                    <p class="text-white text-[10px] font-bold uppercase mb-2">Map Legend</p>
+                    <div class="space-y-1">
+                        <div class="flex items-center text-[9px] text-slate-300">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span> Secure Perimeter
+                        </div>
+                        <div class="flex items-center text-[9px] text-slate-300">
+                            <span class="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span> High Activity Zone
+                        </div>
+                        <div class="flex items-center text-[9px] text-slate-300">
+                            <span class="w-2 h-2 bg-red-500 rounded-full mr-2"></span> Containment Failure
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="text-xl font-black text-blue-900 uppercase mb-6 flex items-center gap-2">
+            Regional Sector Details
+        </h2>
+
+        <div class="map-grid">
+            <div class="sector-card">
+                <div class="map-placeholder">
+                    <div class="grid-lines"></div>
+                    <div class="text-red-500 font-black text-4xl opacity-20 italic">7B</div>
+                    <div class="absolute inset-0 border-4 border-red-500/30"></div>
+                </div>
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-black text-slate-900 uppercase">Mist Valley</h3>
+                        <span class="bg-red-100 text-red-700 text-[10px] font-bold px-2 py-0.5 rounded">CODE RED</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-4">Primary habitat for sub-adult Theropods.This valley has a High density of dense fog and rocky terrain.The valley floor is composed of jagged limestone pillars and deep crevices. These formations provide perfect ambush points for sub-adult Theropods and make 4WD vehicle navigation nearly impossible.</p>
+                    <div class="text-[10px] font-mono text-slate-400 space-y-1">
+                        <p>PERIMETER: 14.2 KM</p>
+                        <p>ASSETS: 12 (1 UNACCOUNTED)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sector-card">
+                <div class="map-placeholder">
+                    <div class="grid-lines"></div>
+                    <div class="text-blue-500 font-black text-4xl opacity-20 italic">04</div>
+                </div>
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-black text-slate-900 uppercase">Azure Plains</h3>
+                        <span class="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-0.5 rounded">SECURE</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-4">Open grasslands designated for Sauropod grazing.This area is Visible from Highway 12.12,000 acres of rolling shortgrass prairie and low-lying wetlands. The "Azure" name comes from the high mineral content of the Blueberry Creek run-off, which gives the watering holes a distinct turquoise hue.Under clear conditions, a Ranger on the Overlook Ridge can spot a herd of Brachiosaurs from up to 8 miles away.</p>
+                    <div class="text-[10px] font-mono text-slate-400 space-y-1">
+                        <p>PERIMETER: 42.8 KM</p>
+                        <p>ASSETS: 45 (STABLE)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sector-card">
+                <div class="map-placeholder">
+                    <div class="grid-lines"></div>
+                    <div class="text-yellow-500 font-black text-4xl opacity-20 italic">09</div>
+                </div>
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-black text-slate-900 uppercase">The Ridge</h3>
+                        <span class="bg-yellow-100 text-yellow-700 text-[10px] font-bold px-2 py-0.5 rounded">CAUTION</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-4">Pterosaur nesting cliffs.This area has a High risk of aerial asset exit during storm fronts.A series of sheer basalt cliffs and jagged limestone spires overlooking the Northern Sea. The elevation ranges from 1,200 to 2,800 feet above sea level.</p>
+                    <div class="text-[10px] font-mono text-slate-400 space-y-1">
+                        <p>PERIMETER: 8.5 KM</p>
+                        <p>ASSETS: 82 (VARIES)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="mt-12 bg-blue-50 border border-blue-100 rounded-lg p-8">
+            <h3 class="text-blue-900 font-black uppercase text-sm mb-4">Map Accuracy Disclaimer</h3>
+            <p class="text-sm text-blue-800 leading-relaxed">
+                The DPW Geospatial Division utilizes thermal imaging and seismic acoustic sensors to generate these maps. In the event of a total power failure, maps will default to the "Last Known Position" (LKP) protocol. Citizens are advised that assets may move up to 5 miles from their mapped position within 15 minutes of a tracking collar failure.
+            </p>
+        </section>
+    </main>
+
+    <footer class="mt-16 text-center border-t border-slate-200 pt-8 text-slate-400 text-[10px] font-mono uppercase tracking-[0.2em]">
+        Department of Prehistoric Wildlife // Map-Server Node: 14-B
+    </footer>
+
+</body>
+</html>

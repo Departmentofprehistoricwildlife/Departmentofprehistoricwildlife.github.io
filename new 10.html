@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DPW | Data Purge & Security Protocol</title>
+	<link rel="icon" type="image/png" href="DPW.png">
+    <link rel="shortcut icon" href="DPW.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto+Mono:wght@500&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        .mono { font-family: 'Roboto Mono', monospace; }
+
+        .purge-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 4rem;
+            border-radius: 4px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #b91c1c;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 1.1rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h2::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 1.2rem;
+            background: #b91c1c;
+        }
+
+        .danger-box {
+            background: #fff1f2;
+            border: 1px solid #fecdd3;
+            padding: 1.5rem;
+            border-left: 4px solid #b91c1c;
+            margin: 1.5rem 0;
+        }
+
+        .protocol-step {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .step-num {
+            background: #1e3a8a;
+            color: white;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            font-weight: 800;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body class="py-12 px-4">
+
+    <nav class="max-w-4xl mx-auto mb-8 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-red-700 flex items-center justify-center text-white font-bold rounded">DPW</div>
+            <span class="font-black text-red-700 uppercase tracking-tighter italic text-sm">Security & Purge Division</span>
+        </div>
+        <div class="flex gap-4 text-xs font-bold uppercase">
+            <a href="new 5.html" class="text-blue-700 hover:underline">OPS Portal</a>
+            <a href="new 9.html" class="text-blue-700 hover:underline">Agent Code</a>
+            <span class="text-red-600">Restricted Access</span>
+        </div>
+    </nav>
+
+    <div class="purge-container">
+        <header class="text-center mb-12 border-b-2 border-red-700 pb-8">
+            <div class="flex justify-center mb-4">
+                <span class="bg-red-700 text-white px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest animate-pulse">Classified: Level 5 Only</span>
+            </div>
+            <h1 class="text-3xl font-black text-slate-900 uppercase tracking-tight mb-2">Automated Data Purge Protocol</h1>
+            <p class="text-slate-500 text-sm font-mono uppercase">Reference: SEC-PURGE-FINAL-2026</p>
+        </header>
+
+        <section class="max-w-none">
+            <div class="danger-box">
+                <h3 class="text-red-900 font-bold uppercase text-sm mb-2 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    Critical Authorization Warning
+                </h3>
+                <p class="text-xs text-red-800 leading-relaxed">
+                    Initiating a data purge is irreversible. This protocol is intended to prevent sensitive genetic sequencing and containment telemetry from being accessed by unauthorized hostile entities or competing corporate interests during a total site compromise.
+                </p>
+            </div>
+
+            <h2>1. Trigger Conditions</h2>
+            <p class="text-sm text-slate-600 mb-6">A Level 5 Data Purge is automatically triggered or manually authorized under the following conditions:</p>
+            <ul class="list-disc pl-5 space-y-2 text-sm text-slate-700 mb-8">
+                <li>Physical breach of the Primary Server Vault by non-biometric verified personnel.</li>
+                <li>Loss of contact with DPW Headquarters for more than 120 minutes during a Code Red event.</li>
+                <li>Manual activation by a Director-level agent using the physical "Dead Man's Switch."</li>
+            </ul>
+
+            <h2>2. Execution Sequence</h2>
+            <div class="mt-4">
+                <div class="protocol-step">
+                    <div class="step-num">01</div>
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm uppercase">Genetic Sequence Erasure</h4>
+                        <p class="text-xs text-slate-500">All proprietary DNA sequences, including the "TRX-Core" genome and hybrid blueprints, are overwritten with 7-pass random noise patterns.</p>
+                    </div>
+                </div>
+                <div class="protocol-step">
+                    <div class="step-num">02</div>
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm uppercase">Containment Log Destruction</h4>
+                        <p class="text-xs text-slate-500">Historical data regarding fence vulnerabilities, patrol routes, and sedative dosages are wiped to prevent tactical exploitation.</p>
+                    </div>
+                </div>
+                <div class="protocol-step">
+                    <div class="step-num">03</div>
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm uppercase">Hardware Decommissioning</h4>
+                        <p class="text-xs text-slate-500">Physical magnetic degaussers are activated in the server room, rendering all solid-state drives and magnetic media permanently unreadable.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2>3. Personnel Responsibility</h2>
+            <p class="text-sm text-slate-600 italic">
+                During the purge sequence, all personnel must facilitate the destruction of physical assets. This includes the manual incineration of paper-based field notes and the destruction of local mobile tracking units.
+            </p>
+
+            <div class="mt-12 p-4 bg-slate-900 text-white rounded font-mono text-[10px] space-y-1">
+                <p class="text-green-500">> SYSTEM READY FOR PURGE</p>
+                <p class="text-green-500">> AWAITING BIOMETRIC KEY...</p>
+                <p class="text-yellow-500">> WARNING: AUTO-PURGE TIMER SET TO 05:00</p>
+            </div>
+        </section>
+
+        <footer class="mt-16 pt-8 border-t flex justify-between items-center text-[10px] text-slate-400 font-mono uppercase tracking-widest">
+            <div>Authorized by: Security Director Alpha</div>
+            <div>SHRED ON SIGHT</div>
+        </footer>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-8 flex justify-center no-print">
+        <button class="bg-red-700 hover:bg-red-800 text-white font-black px-12 py-4 rounded-full uppercase tracking-[0.2em] shadow-2xl transition-transform active:scale-95">
+            Initiate Final Purge
+        </button>
+    </div>
+
+</body>
+</html>

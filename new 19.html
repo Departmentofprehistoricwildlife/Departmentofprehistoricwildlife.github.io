@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DPW | Secure Personnel Access</title>
+	<link rel="icon" type="image/png" href="DPW.png">
+    <link rel="shortcut icon" href="DPW.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@500&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .login-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            width: 100%;
+            max-width: 440px;
+            padding: 3rem;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-field {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 2px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .input-field:focus {
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.1);
+        }
+
+        #login-status {
+            display: none;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 0.75rem;
+            border-radius: 2px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        /* Profile Panel Transition */
+        #profile-panel {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+        #profile-panel.open {
+            transform: translateX(0);
+        }
+        
+        .hidden-view { display: none !important; }
+    </style>
+</head>
+<body class="flex flex-col">
+
+    <nav class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-blue-900 text-white flex items-center justify-center font-bold rounded">DPW</div>
+            <div>
+                <h1 class="text-sm font-black text-slate-900 uppercase tracking-tight leading-none">Staff Portal</h1>
+                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Department of Prehistoric Wildlife</p>
+            </div>
+        </div>
+
+        <div id="nav-actions">
+            <button id="nav-login-btn" onclick="showLoginView()" class="text-xs font-bold text-blue-900 uppercase tracking-widest hover:underline">
+                Personnel Login
+            </button>
+            <button id="nav-profile-btn" onclick="toggleProfile()" class="hidden-view w-10 h-10 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-blue-900 hover:bg-slate-200 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </button>
+        </div>
+    </nav>
+
+    <main id="login-view" class="flex-grow flex items-center justify-center p-6">
+        <div class="login-card">
+            <header class="text-center mb-10">
+                <div class="inline-block w-14 h-14 bg-blue-900 text-white flex items-center justify-center font-bold rounded mb-6">DPW</div>
+                <h1 class="text-2xl font-black text-slate-900 uppercase tracking-tight">Staff Intranet</h1>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-2">Department of Prehistoric Wildlife</p>
+            </header>
+
+            <div id="login-status"></div>
+
+            <form id="login-form" class="space-y-6">
+                <div>
+                    <label class="block text-[10px] font-black text-slate-500 uppercase mb-2 tracking-widest">Personnel Identification</label>
+                    <input type="text" id="personnel-id" placeholder="DPW-ID-0000" class="input-field font-mono text-sm" required>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-black text-slate-500 uppercase mb-2 tracking-widest">Security Clearance Key</label>
+                    <input type="password" id="clearance-key" placeholder="••••••••••••" class="input-field font-mono text-sm" required>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" id="auth-btn" class="w-full bg-blue-900 hover:bg-slate-800 text-white font-black py-4 rounded-sm uppercase tracking-widest transition-all shadow-md active:scale-[0.98]">
+                        Authorize Access
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-10 pt-8 border-t border-slate-100">
+                <div class="bg-red-50 border border-red-100 p-4 rounded mb-6 text-center">
+                    <p class="text-[10px] text-red-700 font-bold uppercase leading-tight">
+                        Department Property: Unauthorized use is subject to criminal prosecution under the Prehistoric Security Act.
+                    </p>
+                </div>
+                
+                <div class="flex justify-center gap-6 text-[11px] font-bold text-blue-900 uppercase">
+                    <a href="new 14.html" class="hover:underline">Legal disclosure</a>
+                    <a href="/DPW/index.html" class="hover:underline">Public Site</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main id="home-view" class="hidden-view p-8 max-w-6xl mx-auto w-full">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="md:col-span-2 space-y-6">
+                <div class="bg-white p-8 border border-slate-200 rounded shadow-sm">
+                    <h2 class="text-xl font-black uppercase tracking-tight text-slate-900 mb-4">Internal Bulletins</h2>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-blue-900 pl-4 py-2">
+                            <span class="text-[10px] font-bold text-blue-900 uppercase">Priority Alpha // 08:00</span>
+                            <p class="text-sm font-semibold text-slate-700">Containment integrity check scheduled for Sector 7-G.Thermal imaging confirms zero heat signatures near the primary barrier. Secondary electric fencing is drawing a steady 10,000-volt load.</p>
+                        </div>
+                        <div class="border-l-4 border-slate-200 pl-4 py-2">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase">Status Update // 06:45</span>
+                            <p class="text-sm text-slate-600">Feeding protocols for Triassic specimens updated in Handbook v4.2.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="space-y-6">
+                <div class="bg-slate-900 text-white p-6 rounded shadow-lg">
+                    <h3 class="text-xs font-black uppercase tracking-widest text-blue-400 mb-4">Quick Links</h3>
+                    <ul class="space-y-3 text-xs font-bold uppercase tracking-wider">
+					    <li><a href="/DPW/index.html" class="hover:text-blue-400 flex items-center gap-2"><span>→</span> Home</a></li>
+                        <li><a href="new 20.html" class="hover:text-blue-400 flex items-center gap-2"><span>→</span> Incident reporting</a></li>
+                        <li><a href="new 21.html" class="hover:text-blue-400 flex items-center gap-2"><span>→</span> Logistics & Supply</a></li>
+                        <li><a href="new 22.html" class="hover:text-blue-400 flex items-center gap-2"><span>→</span> Bio-Metric Logs:</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="profile-overlay" onclick="toggleProfile()" class="fixed inset-0 bg-black/20 backdrop-blur-sm z-[60] hidden-view"></div>
+    <aside id="profile-panel" class="fixed top-0 right-0 h-full w-full max-w-sm bg-white shadow-2xl z-[70] p-8 border-l border-slate-200">
+        <div class="flex justify-between items-center mb-10">
+            <h2 class="text-sm font-black uppercase tracking-widest text-slate-900">Personnel File</h2>
+            <button onclick="toggleProfile()" class="text-slate-400 hover:text-slate-900">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+
+        <div class="text-center mb-8">
+            <div class="w-24 h-24 bg-slate-100 border-2 border-blue-900 rounded-full mx-auto flex items-center justify-center text-blue-900 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <h3 id="display-name" class="text-xl font-black text-slate-900 uppercase">Personnel Name</h3>
+            <p id="display-role" class="text-[10px] font-bold text-blue-900 uppercase tracking-widest mt-1">Classification Level</p>
+        </div>
+
+        <div class="space-y-6 border-t border-slate-100 pt-8">
+            <div>
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Assigned ID</label>
+                <p id="display-id" class="font-mono text-sm font-bold text-slate-700">DPW-XXXX-00</p>
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Clearance Status</label>
+                <span class="inline-block bg-green-100 text-green-700 text-[9px] font-black px-2 py-1 rounded uppercase">Active / Verified</span>
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Last Handshake</label>
+                <p class="font-mono text-[11px] text-slate-500">2026-04-25 14:32:01 UTC</p>
+            </div>
+        </div>
+
+        <div class="absolute bottom-8 left-8 right-8">
+            <button onclick="logout()" class="w-full border border-slate-200 hover:bg-red-50 hover:text-red-600 hover:border-red-100 text-slate-500 text-[10px] font-black uppercase py-3 rounded tracking-widest transition-all">
+                Terminate Session
+            </button>
+        </div>
+    </aside>
+
+    <footer class="mt-auto py-6 px-8 border-t border-slate-200 text-[10px] font-mono text-slate-400 uppercase tracking-widest flex justify-between">
+        <span>Node: DC-HQ-ADMIN-01 // Secure TLS 1.3</span>
+        <span>© 2026 DPW Systems</span>
+    </footer>
+
+    <script>
+    const authorizedUsers = {
+        'DPW-ADMIN': { key: 'SECURE2026', name: 'System Administrator', role: 'Level 5 / Overseer' },
+        'DPW-RANGER-01': { key: 'VELOCIRAPTOR', name: 'Ranger One', role: 'Level 3 / Field Ops' },
+        'DPW-RANGER-02': { key: 'PALEONTOLOGY', name: 'Ranger Two', role: 'Level 4 / Research' },
+        'DPW-DIRECTOR': { key: 'GENESIS-77', name: 'The Director', role: 'Level 5 / Executive' }
+    };
+
+    let currentUser = null;
+
+    // --- SESSION RECOVERY ---
+    const savedSession = localStorage.getItem('dpw_session');
+    if (savedSession) {
+        currentUser = JSON.parse(savedSession);
+        window.addEventListener('load', completeLogin);
+    }
+
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const idInput = document.getElementById('personnel-id').value;
+        const keyInput = document.getElementById('clearance-key').value;
+        const statusDiv = document.getElementById('login-status');
+        const submitBtn = document.getElementById('auth-btn');
+
+        submitBtn.innerText = "Authenticating...";
+        submitBtn.disabled = true;
+
+        setTimeout(() => {
+            if (authorizedUsers[idInput] && authorizedUsers[idInput].key === keyInput) {
+                currentUser = { id: idInput, ...authorizedUsers[idInput] };
+                
+                // SAVE SESSION
+                localStorage.setItem('dpw_session', JSON.stringify(currentUser));
+                
+                statusDiv.style.display = 'block';
+                statusDiv.style.backgroundColor = '#dcfce7';
+                statusDiv.style.color = '#166534';
+                statusDiv.style.border = '1px solid #bbf7d0';
+                statusDiv.innerText = "Authorization Successful. Redirecting...";
+                
+                setTimeout(() => {
+                    completeLogin();
+                }, 1000);
+            } else {
+                statusDiv.style.display = 'block';
+                statusDiv.style.backgroundColor = '#fee2e2';
+                statusDiv.style.color = '#991b1b';
+                statusDiv.style.border = '1px solid #fecaca';
+                statusDiv.innerText = "Invalid Credentials. Access Denied.";
+                submitBtn.innerText = "Authorize Access";
+                submitBtn.disabled = false;
+            }
+        }, 800);
+    });
+
+    function completeLogin() {
+        if (!currentUser) return; 
+
+        document.getElementById('login-view').classList.add('hidden-view');
+        document.getElementById('home-view').classList.remove('hidden-view');
+        document.getElementById('nav-login-btn').classList.add('hidden-view');
+        document.getElementById('nav-profile-btn').classList.remove('hidden-view');
+        
+        document.getElementById('display-name').innerText = currentUser.name;
+        document.getElementById('display-role').innerText = currentUser.role;
+        document.getElementById('display-id').innerText = currentUser.id;
+        
+        window.scrollTo(0, 0);
+    }
+
+    function toggleProfile() {
+        const panel = document.getElementById('profile-panel');
+        const overlay = document.getElementById('profile-overlay');
+        
+        if (panel.classList.contains('open')) {
+            panel.classList.remove('open');
+            setTimeout(() => overlay.classList.add('hidden-view'), 300);
+        } else {
+            overlay.classList.remove('hidden-view');
+            panel.classList.add('open');
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem('dpw_session');
+        
+        toggleProfile();
+        setTimeout(() => {
+            location.reload(); 
+        }, 300);
+    }
+
+    function showLoginView() {
+        window.scrollTo({ top: document.getElementById('login-view').offsetTop, behavior: 'smooth' });
+    }
+</script>
+</body>
+</html>

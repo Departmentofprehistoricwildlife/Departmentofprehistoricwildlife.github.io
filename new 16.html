@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DPW | Secure Personnel Access</title>
+	<link rel="icon" type="image/png" href="DPW.png">
+    <link rel="shortcut icon" href="DPW.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@500&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; height: 100vh; display: flex; flex-direction: column; }
+        .login-card { background: white; border: 1px solid #e2e8f0; width: 100%; max-width: 440px; padding: 3rem; border-radius: 4px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .input-field { background: #ffffff; border: 1px solid #cbd5e1; width: 100%; padding: 0.75rem; border-radius: 2px; outline: none; }
+        .input-field:focus { border-color: #1e3a8a; box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.1); }
+        #login-status { display: none; font-size: 11px; font-weight: bold; text-transform: uppercase; padding: 0.75rem; border-radius: 2px; margin-bottom: 1.5rem; text-align: center; }
+    </style>
+</head>
+<body class="items-center justify-center">
+
+    <div class="login-card">
+        <header class="text-center mb-10">
+            <div class="inline-block w-14 h-14 bg-blue-900 text-white flex items-center justify-center font-bold rounded mb-6">DPW</div>
+            <h1 class="text-2xl font-black text-slate-900 uppercase tracking-tight">Staff Intranet</h1>
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-2">Department of Prehistoric Wildlife</p>
+        </header>
+
+        <div id="login-status"></div>
+
+        <form id="login-form" class="space-y-6">
+            <div>
+                <label class="block text-[10px] font-black text-slate-500 uppercase mb-2 tracking-widest">Personnel Identification</label>
+                <input type="text" id="personnel-id" placeholder="DPW-ADMIN" class="input-field font-mono text-sm" required>
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-slate-500 uppercase mb-2 tracking-widest">Security Clearance Key</label>
+                <input type="password" id="clearance-key" placeholder="SECURE2026" class="input-field font-mono text-sm" required>
+            </div>
+            <button type="submit" class="w-full bg-blue-900 hover:bg-slate-800 text-white font-black py-4 rounded-sm uppercase tracking-widest transition-all">Authorize Access</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const idInput = document.getElementById('personnel-id').value;
+            const keyInput = document.getElementById('clearance-key').value;
+            const statusDiv = document.getElementById('login-status');
+
+            if (idInput === 'DPW-ADMIN' && keyInput === 'SECURE2026') {
+                // SAVE SESSION DATA
+                const userData = {
+                    name: "Director Alpha",
+                    id: "DPW-ADMIN-001",
+                    clearance: "Level 5 (Top Secret)",
+                    role: "Site Superintendent"
+                };
+                sessionStorage.setItem('dpw_user', JSON.stringify(userData));
+
+                statusDiv.style.display = 'block';
+                statusDiv.style.backgroundColor = '#dcfce7';
+                statusDiv.style.color = '#166534';
+                statusDiv.innerText = "Authorization Successful. Redirecting...";
+                
+                setTimeout(() => { window.location.href = '/DPW/new 5.html'; }, 1000);
+            } else {
+                statusDiv.style.display = 'block';
+                statusDiv.style.backgroundColor = '#fee2e2';
+                statusDiv.style.color = '#991b1b';
+                statusDiv.innerText = "Invalid Credentials.";
+            }
+        });
+    </script>
+</body>
+</html>

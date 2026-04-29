@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DPW | Logistics & Supply</title>
+	<link rel="icon" type="image/png" href="DPW.png">
+    <link rel="shortcut icon" href="DPW.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@500&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .inventory-card {
+            background: white;
+            border-left: 4px solid #1e3a8a;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .inventory-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .low-stock {
+            border-left-color: #dc2626 !important;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background-color: #e2e8f0;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            transition: width 1s ease-in-out;
+        }
+
+        #profile-panel {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+        #profile-panel.open {
+            transform: translateX(0);
+        }
+        .hidden-view { display: none !important; }
+
+        .mono { font-family: 'Roboto Mono', monospace; }
+        
+        /* Custom Alert Modal */
+        #custom-alert {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <nav class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-slate-900 text-white flex items-center justify-center font-bold rounded">DPW</div>
+            <div>
+                <h1 class="text-sm font-black text-slate-900 uppercase tracking-tight leading-none">Logistics Terminal</h1>
+                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Resource Management Node: L-01</p>
+            </div>
+        </div>
+
+        <div id="nav-actions" class="flex items-center gap-4">
+            <button onclick="window.location.reload()" class="hidden md:block text-[10px] font-black uppercase text-slate-500 hover:text-slate-900 px-3 py-1 border border-slate-200 rounded">Refresh Sync</button>
+            <button id="nav-profile-btn" onclick="toggleProfile()" class="w-10 h-10 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-900 hover:bg-slate-200">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </button>
+        </div>
+    </nav>
+
+    <main class="flex-grow p-6 lg:p-12 max-w-7xl mx-auto w-full">
+        
+        <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+                <h2 class="text-3xl font-black text-slate-900 uppercase tracking-tight mb-2">Supply & Inventory</h2>
+                <div class="flex items-center gap-3">
+                    <span class="flex items-center gap-1 text-[10px] font-bold text-green-600 uppercase">
+                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> DB Connection Active
+                    </span>
+                    <span class="text-slate-300">|</span>
+                    <span class="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Last Updated: <span id="last-update">00:00:00</span></span>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button class="bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest px-6 py-3 rounded-sm hover:bg-blue-800 transition-all">Download Manifest</button>
+                <button onclick="document.getElementById('requisition-form').scrollIntoView({behavior:'smooth'})" class="bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest px-6 py-3 rounded-sm hover:bg-blue-700 transition-all">New Requisition</button>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div class="inventory-card p-5 border border-slate-200 rounded-sm">
+                <p class="text-[9px] font-black text-slate-400 uppercase mb-1">Electronic Assets</p>
+                <h3 class="text-sm font-black text-slate-900 uppercase mb-4"> Controller Boards</h3>
+                <div class="flex justify-between items-end mb-2">
+                    <span class="text-2xl font-black text-slate-900">42</span>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase">Units In Stock</span>
+                </div>
+                <div class="progress-bar mb-1"><div class="progress-fill bg-blue-600" style="width: 84%"></div></div>
+                <p class="text-[9px] font-bold text-slate-500 uppercase">Capacity: 84%</p>
+            </div>
+
+            <div class="inventory-card p-5 border border-slate-200 rounded-sm low-stock">
+                <p class="text-[9px] font-black text-red-500 uppercase mb-1">Containment Hardware</p>
+                <h3 class="text-sm font-black text-slate-900 uppercase mb-4">Grade-A Fence Insulators</h3>
+                <div class="flex justify-between items-end mb-2">
+                    <span class="text-2xl font-black text-red-600">08</span>
+                    <span class="text-[10px] font-bold text-red-500 uppercase">Low Stock Warning</span>
+                </div>
+                <div class="progress-bar mb-1"><div class="progress-fill bg-red-500" style="width: 15%"></div></div>
+                <p class="text-[9px] font-bold text-red-400 uppercase">Capacity: 15%</p>
+            </div>
+
+            <div class="inventory-card p-5 border border-slate-200 rounded-sm">
+                <p class="text-[9px] font-black text-slate-400 uppercase mb-1">Medical Supplies</p>
+                <h3 class="text-sm font-black text-slate-900 uppercase mb-4">Class-4 Tranquilizer (MG)</h3>
+                <div class="flex justify-between items-end mb-2">
+                    <span class="text-2xl font-black text-slate-900">1,250</span>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase">Liters Available</span>
+                </div>
+                <div class="progress-bar mb-1"><div class="progress-fill bg-green-500" style="width: 65%"></div></div>
+                <p class="text-[9px] font-bold text-slate-500 uppercase">Capacity: 65%</p>
+            </div>
+
+            <div class="inventory-card p-5 border border-slate-200 rounded-sm">
+                <p class="text-[9px] font-black text-slate-400 uppercase mb-1">Biological Feed</p>
+                <h3 class="text-sm font-black text-slate-900 uppercase mb-4">Asset Nutritional Pellets</h3>
+                <div class="flex justify-between items-end mb-2">
+                    <span class="text-2xl font-black text-slate-900">14.2</span>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase">Tons in Cold Storage</span>
+                </div>
+                <div class="progress-bar mb-1"><div class="progress-fill bg-orange-500" style="width: 48%"></div></div>
+                <p class="text-[9px] font-bold text-slate-500 uppercase">Capacity: 48%</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2">
+                <div id="requisition-form" class="bg-white border border-slate-200 p-8 rounded-sm shadow-sm">
+                    <h3 class="text-xs font-black uppercase tracking-widest text-slate-900 mb-8 pb-2 border-b-2 border-blue-900 inline-block">Supply Requisition Form</h3>
+                    
+                    <form id="order-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-500 uppercase mb-2 tracking-widest">Requested Item</label>
+                                <select class="w-full p-3 bg-slate-50 border border-slate-200 text-sm font-bold uppercase outline-none focus:border-blue-900" required>
+                                    <option value="">Select Resource...</option>
+                                    <optgroup label="Hardware">
+                                        <option value="boards">Arduino Controller Node</option>
+                                        <option value="sensors">PIR Motion Sensor Array</option>
+                                        <option value="insulators">Fence Insulators (Grade-A)</option>
+                                    </optgroup>
+                                    <optgroup label="Supplies">
+                                        <option value="feed">Nutritional Pellets (Bulk)</option>
+                                        <option value="tranq">Tranquilizer Solution (Class-4)</option>
+                                        <option value="kits">Trauma Med-Kits (Staff)</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-500 uppercase mb-2 tracking-widest">Quantity</label>
+                                <input type="number" min="1" placeholder="Amount" class="w-full p-3 bg-slate-50 border border-slate-200 text-sm font-bold outline-none focus:border-blue-900" required>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-500 uppercase mb-2 tracking-widest">Justification / Destination Sector</label>
+                            <textarea rows="3" placeholder="Identify use-case or urgent sector requirement..." class="w-full p-3 bg-slate-50 border border-slate-200 text-sm font-medium outline-none focus:border-blue-900" required></textarea>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-4">
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="urgent" class="w-4 h-4 rounded border-slate-300 text-blue-900 focus:ring-blue-900">
+                                <label for="urgent" class="text-[10px] font-black text-slate-600 uppercase cursor-pointer">Mark as Critical (Expedited Courier)</label>
+                            </div>
+                            <button type="submit" class="bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest px-10 py-4 rounded-sm hover:bg-blue-600 transition-all active:scale-95">
+                                Authorize Order
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="bg-slate-900 text-white p-6 rounded-sm border-t-4 border-blue-500 shadow-xl">
+                    <h3 class="text-xs font-black uppercase tracking-widest text-blue-400 mb-6">Recent Requisitions</h3>
+                    <div class="space-y-6">
+                        <div class="border-l border-slate-700 pl-4 relative">
+                            <div class="absolute -left-[4.5px] top-0 w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase">Today 09:12</p>
+                            <p class="text-xs font-bold mt-1">50x Motion Sensors</p>
+                            <p class="text-[9px] text-slate-500 uppercase mt-1">Sector 4-C | <span class="text-green-500">Delivered</span></p>
+                        </div>
+                        <div class="border-l border-slate-700 pl-4 relative">
+                            <div class="absolute -left-[4.5px] top-0 w-2 h-2 bg-orange-500 rounded-full"></div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase">Today 06:45</p>
+                            <p class="text-xs font-bold mt-1">12.5L Tranquilizer</p>
+                            <p class="text-[9px] text-slate-500 uppercase mt-1">Medical Wing | <span class="text-orange-500">In Transit</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="custom-alert">
+        <div class="bg-white p-8 max-w-sm w-full mx-4 rounded-sm border-t-8 border-blue-900 shadow-2xl">
+            <h4 id="alert-title" class="text-sm font-black uppercase tracking-tighter mb-2">System Message</h4>
+            <p id="alert-body" class="text-xs text-slate-600 mb-6 leading-relaxed"></p>
+            <button onclick="closeAlert()" class="w-full bg-slate-900 text-white text-[10px] font-black uppercase py-3 tracking-widest">Acknowledge</button>
+        </div>
+    </div>
+
+    <div id="profile-overlay" onclick="toggleProfile()" class="fixed inset-0 bg-black/20 backdrop-blur-sm z-[60] hidden-view"></div>
+    <aside id="profile-panel" class="fixed top-0 right-0 h-full w-full max-w-sm bg-white shadow-2xl z-[70] p-8 border-l border-slate-200">
+        <div class="flex justify-between items-center mb-10">
+            <h2 class="text-sm font-black uppercase tracking-widest text-slate-900">Staff Credentials</h2>
+            <button onclick="toggleProfile()" class="text-slate-400 hover:text-slate-900">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="text-center mb-8">
+            <div class="w-20 h-20 bg-slate-100 border-2 border-slate-900 rounded-full mx-auto flex items-center justify-center text-slate-900 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <h3 id="display-name" class="text-lg font-black text-slate-900 uppercase">Authorized User</h3>
+            <p id="display-role" class="text-[9px] font-bold text-blue-900 uppercase tracking-widest mt-1">Classification Level</p>
+            <p id="display-id" class="text-[10px] font-mono text-slate-400 mt-2">ID: DPW-USER</p>
+        </div>
+        <div class="absolute bottom-8 left-8 right-8">
+            <button onclick="logout()" class="w-full border border-slate-200 hover:bg-red-50 hover:text-red-600 text-slate-500 text-[10px] font-black uppercase py-3 rounded tracking-widest transition-all">
+                Terminate Session
+            </button>
+        </div>
+    </aside>
+
+    <script>
+        // Session Management
+        let currentUser = null;
+        try {
+            const savedSession = localStorage.getItem('dpw_session');
+            if (savedSession) {
+                currentUser = JSON.parse(savedSession);
+            } else {
+                // Fallback for Preview Mode
+                currentUser = {
+                    name: "System Administrator",
+                    role: "Logistics Lead (Override)",
+                    id: "DPW-PREVIEW-01"
+                };
+            }
+        } catch(e) {
+            currentUser = { name: "Preview Guest", role: "Viewer", id: "0000" };
+        }
+        
+        // Update UI with user data
+        document.getElementById('display-name').innerText = currentUser.name;
+        document.getElementById('display-role').innerText = currentUser.role;
+        document.getElementById('display-id').innerText = "ID: " + currentUser.id;
+
+        function updateUpdateTimer() {
+            const now = new Date();
+            document.getElementById('last-update').innerText = now.toLocaleTimeString();
+        }
+        setInterval(updateUpdateTimer, 10000);
+        updateUpdateTimer();
+
+        function toggleProfile() {
+            const panel = document.getElementById('profile-panel');
+            const overlay = document.getElementById('profile-overlay');
+            if (panel.classList.contains('open')) {
+                panel.classList.remove('open');
+                setTimeout(() => overlay.classList.add('hidden-view'), 300);
+            } else {
+                overlay.classList.remove('hidden-view');
+                panel.classList.add('open');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('dpw_session');
+            location.reload(); // Refresh to apply fallback in preview
+        }
+
+        function showAlert(title, body) {
+            document.getElementById('alert-title').innerText = title;
+            document.getElementById('alert-body').innerText = body;
+            document.getElementById('custom-alert').style.display = 'flex';
+        }
+
+        function closeAlert() {
+            document.getElementById('custom-alert').style.display = 'none';
+        }
+
+        document.getElementById('order-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.innerText = "AUTHORIZING...";
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                const reqId = "REQ-" + Math.floor(Math.random() * 90000 + 10000);
+                showAlert("Order Transmitted", "Requisition " + reqId + " has been sent to Central Supply. Dispatch is estimated in 4.5 hours.");
+                this.reset();
+                submitBtn.innerText = "Authorize Order";
+                submitBtn.disabled = false;
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

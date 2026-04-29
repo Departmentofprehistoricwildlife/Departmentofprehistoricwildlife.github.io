@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DPW | Medical & Rapid Response</title>
+	<link rel="icon" type="image/png" href="DPW.png">
+    <link rel="shortcut icon" href="DPW.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto+Mono:wght@500&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        .mono { font-family: 'Roboto Mono', monospace; }
+
+        .medical-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .emergency-pulse {
+            animation: pulse-border 2s infinite;
+        }
+
+        @keyframes pulse-border {
+            0% { border-color: #ef4444; }
+            50% { border-color: #b91c1c; box-shadow: 0 0 10px rgba(185, 28, 28, 0.2); }
+            100% { border-color: #ef4444; }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <header class="bg-blue-900 text-white py-6 px-6 shadow-lg">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-white text-blue-900 rounded flex items-center justify-center font-black text-xl">DPW</div>
+                <div>
+                    <h1 class="text-xl font-black uppercase tracking-tight">Medical Services Division</h1>
+                    <p class="text-xs text-blue-200 font-bold uppercase tracking-widest">Trauma & Specialized Veterinary Response</p>
+                </div>
+            </div>
+            <nav class="flex gap-6 text-sm font-bold">
+                <a href="new 5.html" class="hover:text-blue-300 transition">Emergency Portal</a>
+                <a href="new 6.html" class="hover:text-blue-300 transition">Data Policy</a>
+                <a href="new 7.html" class="hover:text-blue-300 transition">Waiver</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto p-6 md:p-12">
+        
+        <div class="bg-white border-2 emergency-pulse rounded-xl p-8 mb-12 shadow-xl">
+            <div class="flex flex-col md:flex-row items-center gap-8">
+                <div class="bg-red-600 text-white p-4 rounded-full">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </div>
+                <div class="flex-1 text-center md:text-left">
+                    <h2 class="text-3xl font-black text-red-700 uppercase mb-2">Urgent Trauma Line</h2>
+                    <p class="text-gray-600 font-bold mb-4">If you have suffered a prehistoric wildlife encounter or have been exposed to unknown aerosols near Sector 7B, use the priority link below.</p>
+                    <div class="flex flex-wrap justify-center md:justify-start gap-4">
+                        <a href="tel:+91 8668017691" class="bg-red-600 text-white px-8 py-3 rounded-lg font-black uppercase tracking-wider hover:bg-red-700 transition">Call Rapid Dispatch</a>
+                        <button class="bg-white border-2 border-red-600 text-red-600 px-8 py-3 rounded-lg font-black uppercase tracking-wider hover:bg-red-50 transition">Share GPS Coordinates</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="medical-card p-8">
+                <h3 class="text-xl font-black text-blue-900 uppercase mb-6 border-b pb-2">Medical Assistance Request</h3>
+                <form class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Full Legal Name</label>
+                        <input type="text" class="w-full bg-gray-50 border border-gray-200 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-900" placeholder="John Doe">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Sector ID</label>
+                            <input type="text" class="w-full bg-gray-50 border border-gray-200 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-900" placeholder="e.g. 7B">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Time of Exposure</label>
+                            <input type="time" class="w-full bg-gray-50 border border-gray-200 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-900">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Nature of Incident</label>
+                        <select class="w-full bg-gray-50 border border-gray-200 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-900">
+                            <option>Minor Abrasion/Laceration</option>
+                            <option>Crush/Impact Trauma</option>
+                            <option>Infrasonic Disorientation</option>
+                            <option>Aerosol/Bio-agent Inhalation</option>
+                            <option>Other Prehistoric Encounter</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Detailed Description</label>
+                        <textarea class="w-full bg-gray-50 border border-gray-200 rounded p-3 h-32 focus:outline-none focus:ring-2 focus:ring-blue-900" placeholder="Describe symptoms or physical damage..."></textarea>
+                    </div>
+                    <button type="button" class="w-full bg-blue-900 text-white font-black py-4 rounded uppercase tracking-widest shadow-lg hover:bg-blue-800 transition">Submit to Triage</button>
+                </form>
+            </div>
+
+            <div class="space-y-6">
+                <div class="medical-card p-6">
+                    <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Active Triage Centers</h4>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center p-3 bg-green-50 border border-green-200 rounded">
+                            <div>
+                                <p class="text-sm font-bold text-green-900">Central Hub Clinic</p>
+                                <p class="text-[10px] text-green-700 font-mono">STATUS: OPEN (Low Wait)</p>
+                            </div>
+                            <span class="text-xs font-bold text-green-600 underline cursor-pointer">Directions</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-orange-50 border border-orange-200 rounded">
+                            <div>
+                                <p class="text-sm font-bold text-orange-900">Sector 7 Field Hospital</p>
+                                <p class="text-[10px] text-orange-700 font-mono">STATUS: CRITICAL ONLY</p>
+                            </div>
+                            <span class="text-xs font-bold text-orange-600 underline cursor-pointer">Directions</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-blue-900 text-white p-6 rounded-xl shadow-lg">
+                    <h4 class="text-sm font-black uppercase mb-4 tracking-tight">Specialized Care Guidelines</h4>
+                    <div class="space-y-3 text-xs leading-relaxed">
+                        <div class="flex gap-3">
+                            <span class="text-blue-300 font-bold">A.</span>
+                            <p>Do not apply standard tourniquets to crush injuries caused by Sauropods without DPW paramedic supervision.</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <span class="text-blue-300 font-bold">B.</span>
+                            <p>Exposure to Theropod saliva requires immediate prophylactic antibiotic treatment at a DPW facility.</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <span class="text-blue-300 font-bold">C.</span>
+                            <p>Infrasonic nausea should be treated in a quiet, pressurized environment. Avoid loud noises for 48 hours.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 border-2 border-dashed border-gray-300 rounded-xl text-center">
+                    <p class="text-xs text-gray-500 font-bold uppercase mb-2">Staff Access Only</p>
+                    <button class="text-blue-900 text-xs font-black hover:underline">VETERINARY TRAUMA PORTAL &rarr;</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-200 py-12 px-6 border-t border-gray-300 mt-12">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-xs text-gray-500 mono gap-6">
+            <p>&copy; 2026 DEPT OF PREHISTORIC WILDLIFE | MEDICAL DIVISION</p>
+            <div class="flex gap-6">
+                <span>FILE_ID: DPW-MED-FORM-44</span>
+                <span>SECURE NODE: 09-TRX</span>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

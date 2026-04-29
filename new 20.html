@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DPW | Incident Reporting System</title>
+	<link rel="icon" type="image/png" href="DPW.png">
+    <link rel="shortcut icon" href="DPW.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@500&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        .form-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-field {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 2px;
+            outline: none;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+
+        .input-field:focus {
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.1);
+        }
+
+        .status-pill {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            letter-spacing: 0.05em;
+        }
+
+        /* Profile Panel Transition from previous setup */
+        #profile-panel {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+        #profile-panel.open {
+            transform: translateX(0);
+        }
+        .hidden-view { display: none !important; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <nav class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <a href="/DPW/index.html" class="w-10 h-10 bg-blue-900 text-white flex items-center justify-center font-bold rounded hover:bg-slate-800 transition-colors">DPW</a>
+            <div>
+                <h1 class="text-sm font-black text-slate-900 uppercase tracking-tight leading-none">Incident Portal</h1>
+                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Classification Level: Restricted</p>
+            </div>
+        </div>
+
+        <div id="nav-actions">
+            <button id="nav-profile-btn" onclick="toggleProfile()" class="w-10 h-10 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-blue-900 hover:bg-slate-200">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </button>
+        </div>
+    </nav>
+
+    <main class="flex-grow p-6 lg:p-12 max-w-5xl mx-auto w-full">
+        
+        <header class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="status-pill bg-red-100 text-red-700">Priority Alpha</span>
+                    <span class="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Form Ref: IR-2026-X7</span>
+                </div>
+                <h2 class="text-3xl font-black text-slate-900 uppercase tracking-tight">New Incident Report</h2>
+            </div>
+            <div class="text-right">
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Current System Time</p>
+                <p id="clock" class="font-mono text-sm font-bold text-blue-900">12:00:00 UTC</p>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-2">
+                <form id="incident-form" class="form-card p-8 space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-500 uppercase mb-2 tracking-widest">Incident Type</label>
+                            <select class="input-field" required>
+                                <option value="">Select Classification...</option>
+                                <option value="containment">Containment Breach</option>
+                                <option value="medical">Staff Medical Emergency</option>
+                                <option value="asset_injury">Asset Injury / Illness</option>
+                                <option value="tech_failure">Sensor / Fence Failure</option>
+                                <option value="unauthorized">Unauthorized Personnel Incursion</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-500 uppercase mb-2 tracking-widest">Sector Location</label>
+                            <input type="text" placeholder="e.g. Sector 7-G, T-Rex Paddock" class="input-field" required>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-500 uppercase mb-2 tracking-widest">Event Description</label>
+                        <textarea rows="4" placeholder="Provide detailed chronological account of the incident..." class="input-field" required></textarea>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 border border-slate-200 rounded">
+                        <label class="block text-[10px] font-black text-slate-500 uppercase mb-3 tracking-widest">Hardware / Sensor Data (Optional)</label>
+                        <div class="flex gap-4">
+                            <input type="file" class="text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-[10px] file:font-black file:uppercase file:bg-blue-900 file:text-white hover:file:bg-slate-800">
+                        </div>
+                        <p class="text-[9px] text-slate-400 mt-2 font-mono uppercase">Upload .csv, .txt, or .log files from Computer.</p>
+                    </div>
+
+                    <div class="pt-4 flex items-center justify-between">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 rounded border-slate-300 text-blue-900 focus:ring-blue-900" required>
+                            <span class="text-[10px] font-bold text-slate-600 uppercase">I verify this report is accurate under the DPW Security Act.</span>
+                        </label>
+                        <button type="submit" class="bg-blue-900 hover:bg-red-700 text-white font-black px-8 py-3 rounded-sm uppercase tracking-widest transition-all shadow-md active:scale-95">
+                            Submit Report
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="space-y-6">
+                <div class="bg-slate-900 text-white p-6 rounded border-b-4 border-red-600 shadow-lg">
+                    <h3 class="text-xs font-black uppercase tracking-widest text-red-400 mb-4 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19 9 2-9-18-9 18 9-2ZM12 19v-9"/></svg>
+                        Critical Protocol
+                    </h3>
+                    <ul class="space-y-4 text-[11px] font-bold uppercase tracking-wider leading-relaxed">
+                        <li class="flex gap-3 text-slate-300"><span class="text-red-500">01.</span> Secure the immediate perimeter before filing report.</li>
+                        <li class="flex gap-3 text-slate-300"><span class="text-red-500">02.</span> Use exact sector coordinates for evacuation teams.</li>
+                        <li class="flex gap-3 text-slate-300"><span class="text-red-500">03.</span> Falsifying incident data is a Class-A violation.</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white p-6 border border-slate-200 rounded">
+                    <h3 class="text-xs font-black uppercase tracking-widest text-slate-900 mb-4">Contact Response Teams</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center text-[10px] font-bold">
+                            <span class="text-slate-400 uppercase">Containment Unit</span>
+                            <span class="font-mono text-blue-900">EXT 911</span>
+                        </div>
+                        <div class="flex justify-between items-center text-[10px] font-bold">
+                            <span class="text-slate-400 uppercase">Medical Wing</span>
+                            <span class="font-mono text-blue-900">EXT 104</span>
+                        </div>
+                        <div class="flex justify-between items-center text-[10px] font-bold">
+                            <span class="text-slate-400 uppercase">Tech Support</span>
+                            <span class="font-mono text-blue-900">EXT 404</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-6 px-8 border-t border-slate-200 text-[10px] font-mono text-slate-400 uppercase tracking-widest flex justify-between">
+        <span>Channel: SECURE-REPORT-ENCRYPTED</span>
+        <span>Node: DC-HQ-INCIDENT-01</span>
+    </footer>
+
+    <div id="profile-overlay" onclick="toggleProfile()" class="fixed inset-0 bg-black/20 backdrop-blur-sm z-[60] hidden-view"></div>
+    <aside id="profile-panel" class="fixed top-0 right-0 h-full w-full max-w-sm bg-white shadow-2xl z-[70] p-8 border-l border-slate-200">
+        <div class="flex justify-between items-center mb-10">
+            <h2 class="text-sm font-black uppercase tracking-widest text-slate-900">Personnel File</h2>
+            <button onclick="toggleProfile()" class="text-slate-400 hover:text-slate-900">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="text-center mb-8">
+            <div class="w-20 h-20 bg-slate-100 border-2 border-blue-900 rounded-full mx-auto flex items-center justify-center text-blue-900 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <h3 id="display-name" class="text-lg font-black text-slate-900 uppercase">Staff Member</h3>
+            <p id="display-role" class="text-[9px] font-bold text-blue-900 uppercase tracking-widest mt-1">Classification Level</p>
+        </div>
+        <div class="absolute bottom-8 left-8 right-8">
+            <button onclick="logout()" class="w-full border border-slate-200 hover:bg-red-50 hover:text-red-600 text-slate-500 text-[10px] font-black uppercase py-3 rounded tracking-widest transition-all">
+                Terminate Session
+            </button>
+        </div>
+    </aside>
+
+    <script>
+        // Check session on load
+        let currentUser = null;
+        const savedSession = localStorage.getItem('dpw_session');
+        
+        if (savedSession) {
+            currentUser = JSON.parse(savedSession);
+            document.getElementById('display-name').innerText = currentUser.name;
+            document.getElementById('display-role').innerText = currentUser.role;
+        } else {
+            // Redirect to login if not signed in (Security measure)
+            window.location.href = 'index.html'; 
+        }
+
+        // Live Clock
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toUTCString().split(' ')[4] + ' UTC';
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function toggleProfile() {
+            const panel = document.getElementById('profile-panel');
+            const overlay = document.getElementById('profile-overlay');
+            if (panel.classList.contains('open')) {
+                panel.classList.remove('open');
+                setTimeout(() => overlay.classList.add('hidden-view'), 300);
+            } else {
+                overlay.classList.remove('hidden-view');
+                panel.classList.add('open');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('dpw_session');
+            window.location.href = 'index.html';
+        }
+
+        document.getElementById('incident-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.innerText = "Transmitting...";
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                alert("Incident Report IR-" + Math.floor(Math.random() * 9000 + 1000) + " has been successfully transmitted to HQ.");
+                window.location.href = 'index.html';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
