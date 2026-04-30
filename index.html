@@ -99,66 +99,6 @@
                 height: 250px;
             }
         }
-
-        /* AI Assistant Styles */
-        #ai-chat-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 100;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        #ai-chat-toggle:hover {
-            transform: scale(1.1);
-        }
-        #ai-window {
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            width: 350px;
-            max-width: calc(100vw - 40px);
-            height: 500px;
-            max-height: calc(100vh - 120px);
-            background: white;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            z-index: 99;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            border: 1px solid #e5e7eb;
-            overflow: hidden;
-            display: none;
-        }
-        .chat-bubble {
-            max-width: 85%;
-            padding: 10px 14px;
-            border-radius: 18px;
-            margin-bottom: 8px;
-            font-size: 14px;
-            line-height: 1.4;
-        }
-        .chat-bubble.user {
-            background-color: var(--dpw-green);
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 4px;
-        }
-        .chat-bubble.ai {
-            background-color: #f3f4f6;
-            color: var(--dpw-dark);
-            align-self: flex-start;
-            border-bottom-left-radius: 4px;
-            border: 1px solid #e5e7eb;
-        }
-        .loader {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid var(--dpw-orange);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -178,7 +118,7 @@
             </div>
         </div>
         <div class="hidden md:flex gap-8 font-bold text-xs uppercase tracking-widest items-center">
-            <a href="new 19.html" class="hover:text-orange-300 transition-colors">Staff login</a>
+		    <a href="new 19.html" class="hover:text-orange-300 transition-colors">Staff login</a>
             <a href="#safety" class="hover:text-orange-300 transition-colors">Safety</a>
             <a href="#species" class="hover:text-orange-300 transition-colors">Species</a>
             <a href="#report" class="bg-orange-600 px-4 py-2 rounded hover:bg-orange-700 transition-colors">Report Sighting</a>
@@ -199,8 +139,8 @@
                 <h2 class="text-3xl md:text-4xl mb-6 text-stone-800 italic border-b-2 border-stone-300 pb-4">Coexistence Protocols</h2>
                 <p class="text-base md:text-lg text-stone-600 mb-8 leading-relaxed">
                     Living alongside prehistoric megafauna requires a fundamental shift in daily awareness. The DPW provides the resources needed to keep your community safe.
-                    <br><br>
-                    The Department of Prehistoric Wildlife (DPW) is a global organization within the Jurassic World franchise, established in 1879, that tracks, studies, and manages dinosaur sightings to facilitate human-dinosaur coexistence. It functions as an in-universe agency focused on protection and public safety, similar to wildlife management services.
+					
+					The Department of Prehistoric Wildlife (DPW) is a global organization within the Jurassic World franchise, established in 1879, that tracks, studies, and manages dinosaur sightings to facilitate human-dinosaur coexistence. It functions as an in-universe agency focused on protection and public safety, similar to wildlife management services.
                 </p>
                 <div class="grid grid-cols-1 gap-4">
                     <div class="p-6 bg-white shadow-lg border-l-8 border-orange-600 rounded">
@@ -215,7 +155,7 @@
             </div>
             <div class="md:w-1/2 w-full mt-8 md:mt-0">
                 <div class="rounded-lg overflow-hidden shadow-2xl border-4 md:border-8 border-white">
-                <img src="https://images.unsplash.com/photo-1517926967795-319337841961?auto=format&fit=crop&q=80&w=1000" class="w-full h-auto" alt="T-Rex in the wild">
+				<img src="data:image/jpeg;base64,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" class="w-full h-auto" alt="T-Rex in the wild">
                     <div class="bg-stone-800 text-white p-3 text-center text-xs uppercase font-bold tracking-widest">
                         Field Observation: Adult Stegosauria, Sector 3
                     </div>
@@ -303,125 +243,5 @@
         </div>
     </footer>
 
-    <!-- AI Field Assistant Interface -->
-    <button id="ai-chat-toggle" class="bg-[#d97b56] text-white p-4 rounded-full shadow-2xl flex items-center justify-center border-2 border-white">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path></svg>
-    </button>
-
-    <div id="ai-window">
-        <div class="bg-[#5e6d62] p-4 text-white flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                    <img src="DPW.png" class="w-6 h-6 object-contain" alt="DPW">
-                </div>
-                <div>
-                    <div class="text-xs font-bold uppercase tracking-tighter">AI Field Assistant</div>
-                    <div class="text-[10px] opacity-80 uppercase font-light">Direct Intelligence Uplink</div>
-                </div>
-            </div>
-            <button id="close-ai" class="opacity-50 hover:opacity-100">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
-            </button>
-        </div>
-        <div id="chat-messages" class="flex-1 overflow-y-auto p-4 flex flex-col gap-2 bg-[#f4f1ec]">
-            <div class="chat-bubble ai">Greetings, citizen. I am the DPW AI Field Assistant. How can I help you navigate coexistence today? You can ask about species identification, safety protocols, or alert status.</div>
-        </div>
-        <div class="p-3 border-t border-gray-100 bg-white">
-            <form id="ai-form" class="flex gap-2">
-                <input type="text" id="ai-input" placeholder="Ask the Field Assistant..." class="flex-1 bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#d97b56]">
-                <button type="submit" class="bg-[#d97b56] text-white p-2 rounded-lg hover:bg-[#c06a4a] transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        const chatToggle = document.getElementById('ai-chat-toggle');
-        const aiWindow = document.getElementById('ai-window');
-        const closeAi = document.getElementById('close-ai');
-        const aiForm = document.getElementById('ai-form');
-        const aiInput = document.getElementById('ai-input');
-        const chatMessages = document.getElementById('chat-messages');
-
-        // Toggle UI
-        chatToggle.addEventListener('click', () => {
-            aiWindow.style.display = aiWindow.style.display === 'flex' ? 'none' : 'flex';
-        });
-
-        closeAi.addEventListener('click', () => {
-            aiWindow.style.display = 'none';
-        });
-
-        // ==========================================
-        // GITHUB DEPLOYMENT: PASTE YOUR KEY BELOW
-        // ==========================================
-        const manualApiKey = "AIzaSyDl1UDkh9yLBfDWnkw-7HV-iuZSv9fVWJs"; 
-        
-        const envApiKey = typeof __api_key !== 'undefined' ? __api_key : "";
-        const apiKey = manualApiKey || envApiKey;
-
-        async function getAIResponse(userPrompt) {
-            const systemPrompt = `You are the Official DPW (Department of Prehistoric Wildlife) AI Field Assistant. 
-            Your tone is professional, authoritative, but helpful—similar to a National Park Ranger but for dinosaurs. 
-            You must provide safety advice based on the Jurassic World 'de-extinct' world logic.
-            If asked about specific species like T-Rex, Raptors, or Triceratops, give accurate in-universe facts and safety warnings.
-            Always prioritize human safety and containment protocols.
-            If the user reports a sighting, remind them to use the official 'Sighting Portal' on this page.
-            Be concise. Use DPW terminology like 'Sectors', 'Containment Breaches', and 'Coexistence Protocols'.`;
-
-            if (!apiKey) {
-                return "CRITICAL ERROR: No API Key detected. Ensure manualApiKey is set in the source code.";
-            }
-
-            let retries = 0;
-            const maxRetries = 5;
-
-            while (retries < maxRetries) {
-                try {
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ text: userPrompt }] }],
-                            systemInstruction: { parts: [{ text: systemPrompt }] }
-                        })
-                    });
-
-                    if (!response.ok) throw new Error('API Error');
-                    const data = await response.json();
-                    return data.candidates?.[0]?.content?.parts?.[0]?.text || "Communication relay error.";
-                } catch (error) {
-                    retries++;
-                    const delay = Math.pow(2, retries) * 1000;
-                    await new Promise(res => setTimeout(res, delay));
-                }
-            }
-            return "Unable to establish secure uplink. Retrying protocol failed.";
-        }
-
-        aiForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const text = aiInput.value.trim();
-            if (!text) return;
-
-            const userDiv = document.createElement('div');
-            userDiv.className = 'chat-bubble user';
-            userDiv.textContent = text;
-            chatMessages.appendChild(userDiv);
-            aiInput.value = '';
-
-            const loadingDiv = document.createElement('div');
-            loadingDiv.className = 'chat-bubble ai flex items-center gap-2';
-            loadingDiv.innerHTML = '<div class="loader"></div> <span class="text-xs uppercase font-bold opacity-50">Transmitting...</span>';
-            chatMessages.appendChild(loadingDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            const aiResponse = await getAIResponse(text);
-            loadingDiv.classList.remove('flex', 'items-center', 'gap-2');
-            loadingDiv.innerHTML = aiResponse;
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        });
-    </script>
 </body>
 </html>
