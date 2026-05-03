@@ -255,7 +255,7 @@
     <script>
         let userData = {};
         let timerInterval;
-        let timeLeft = 1200;
+        let timeLeft = 1200; // 20 minutes default
 
         const hardQuestions = [
             { q: "Calculate the necessary dosage of M-99 for a 6,000kg Triceratops exhibiting Acute Hyper-Aggression Syndrome.", o: ["5mg", "15mg", "45mg", "120mg"], a: 2 },
@@ -280,13 +280,12 @@
             { q: "Which authority has final say on 'Specimen Termination' during a mass containment breach?", o: ["Lead Scientist", "Field Agent", "The Director", "Military Liaison"], a: 2 }
         ];
 
-        // Initialization: Check for saved state
         window.onload = function() {
             const savedState = localStorage.getItem('dpw_exam_state');
             if (savedState) {
                 const state = JSON.parse(savedState);
                 userData = state.userData;
-                timeLeft = state.timeLeft || 1200;
+                timeLeft = typeof state.timeLeft !== 'undefined' ? state.timeLeft : 1200;
 
                 if (state.status === 'report') {
                     showReport(state.score, state.reportId);
@@ -381,19 +380,27 @@
         function startTimer() {
             const timerEl = document.getElementById('timer');
             clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
+            
+            // Function to update the UI
+            const updateUI = () => {
                 const m = Math.floor(timeLeft / 60);
                 const s = timeLeft % 60;
                 timerEl.textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+            };
+
+            updateUI(); // Initial call
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateUI();
                 
-                // Save time every 5 seconds to reduce storage writes
-                if(timeLeft % 5 === 0) saveState('exam');
+                // SAVE TIMER TO STORAGE EVERY SECOND
+                saveState('exam');
 
                 if(timeLeft <= 0) { 
                     clearInterval(timerInterval); 
                     submitExam(); 
                 }
-                timeLeft--;
             }, 1000);
         }
 
