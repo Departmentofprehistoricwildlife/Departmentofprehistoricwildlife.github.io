@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DPW | Official Examination Portal</title>
-	<link rel="icon" type="image/png" href="/DPW.png">
+    <link rel="icon" type="image/png" href="/DPW.png">
     <link rel="shortcut icon" href="DPW.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -239,9 +239,12 @@
                     </div>
                 </div>
 
-                <div class="mt-12 flex justify-center no-print">
+                <div class="mt-12 flex flex-col items-center space-y-4 no-print">
                     <button onclick="window.print()" class="bg-slate-800 text-white px-8 py-3 rounded font-bold hover:bg-slate-700">
                         <i class="fa-solid fa-print mr-2"></i> Print Official Report
+                    </button>
+                    <button onclick="clearSystem()" class="text-xs text-slate-400 hover:text-red-500 uppercase tracking-widest font-bold">
+                        Clear Record & Restart System
                     </button>
                 </div>
             </div>
@@ -252,6 +255,7 @@
     <script>
         let userData = {};
         let timerInterval;
+        let timeLeft = 1200;
 
         const hardQuestions = [
             { q: "Calculate the necessary dosage of M-99 for a 6,000kg Triceratops exhibiting Acute Hyper-Aggression Syndrome.", o: ["5mg", "15mg", "45mg", "120mg"], a: 2 },
@@ -276,6 +280,57 @@
             { q: "Which authority has final say on 'Specimen Termination' during a mass containment breach?", o: ["Lead Scientist", "Field Agent", "The Director", "Military Liaison"], a: 2 }
         ];
 
+        // Initialization: Check for saved state
+        window.onload = function() {
+            const savedState = localStorage.getItem('dpw_exam_state');
+            if (savedState) {
+                const state = JSON.parse(savedState);
+                userData = state.userData;
+                timeLeft = state.timeLeft || 1200;
+
+                if (state.status === 'report') {
+                    showReport(state.score, state.reportId);
+                } else if (state.status === 'exam') {
+                    renderQuestions();
+                    // Restore checked answers
+                    if(state.answers) {
+                        state.answers.forEach((val, i) => {
+                            if(val !== null) {
+                                const el = document.querySelector(`input[name="q${i}"][value="${val}"]`);
+                                if(el) el.checked = true;
+                            }
+                        });
+                    }
+                    showSection('exam');
+                    startTimer();
+                } else if (state.status === 'instructions') {
+                    showSection('instructions');
+                }
+            }
+        };
+
+        function saveState(status, extra = {}) {
+            const answers = [];
+            hardQuestions.forEach((_, i) => {
+                const sel = document.querySelector(`input[name="q${i}"]:checked`);
+                answers.push(sel ? sel.value : null);
+            });
+
+            const state = {
+                status,
+                userData,
+                timeLeft,
+                answers,
+                ...extra
+            };
+            localStorage.setItem('dpw_exam_state', JSON.stringify(state));
+        }
+
+        function clearSystem() {
+            localStorage.removeItem('dpw_exam_state');
+            location.reload();
+        }
+
         function showSection(id) {
             document.querySelectorAll('section').forEach(s => s.classList.add('hidden-section'));
             document.getElementById(`section-${id}`).classList.remove('hidden-section');
@@ -285,15 +340,24 @@
         function goToInstructions() {
             const name = document.getElementById('fullName').value;
             const id = document.getElementById('empId').value;
-            if(!name || !id) return alert("All identification fields are mandatory.");
+            if(!name || !id) {
+                const msg = document.createElement('div');
+                msg.className = "fixed top-10 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-6 py-3 rounded shadow-lg z-50 font-bold";
+                msg.textContent = "All identification fields are mandatory.";
+                document.body.appendChild(msg);
+                setTimeout(() => msg.remove(), 3000);
+                return;
+            }
             
             userData = { name, id, division: document.getElementById('division').value };
             showSection('instructions');
+            saveState('instructions');
         }
 
         function startExam() {
             renderQuestions();
             showSection('exam');
+            saveState('exam');
             startTimer();
         }
 
@@ -305,7 +369,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         ${q.o.map((opt, oi) => `
                             <label class="flex items-center p-3 border rounded border-slate-200 hover:bg-blue-50 cursor-pointer transition">
-                                <input type="radio" name="q${i}" value="${oi}" class="w-4 h-4 text-blue-900">
+                                <input type="radio" name="q${i}" value="${oi}" class="w-4 h-4 text-blue-900" onchange="saveState('exam')">
                                 <span class="ml-3 text-sm font-medium text-slate-700">${opt}</span>
                             </label>
                         `).join('')}
@@ -315,13 +379,20 @@
         }
 
         function startTimer() {
-            let timeLeft = 1200; // 20 mins
             const timerEl = document.getElementById('timer');
+            clearInterval(timerInterval);
             timerInterval = setInterval(() => {
                 const m = Math.floor(timeLeft / 60);
                 const s = timeLeft % 60;
                 timerEl.textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-                if(timeLeft <= 0) { clearInterval(timerInterval); submitExam(); }
+                
+                // Save time every 5 seconds to reduce storage writes
+                if(timeLeft % 5 === 0) saveState('exam');
+
+                if(timeLeft <= 0) { 
+                    clearInterval(timerInterval); 
+                    submitExam(); 
+                }
                 timeLeft--;
             }, 1000);
         }
@@ -334,8 +405,14 @@
                 if(sel && parseInt(sel.value) === q.a) score++;
             });
 
+            const reportId = `DPW-REP-${Math.floor(Math.random()*90000) + 10000}`;
+            saveState('report', { score, reportId });
+            showReport(score, reportId);
+        }
+
+        function showReport(score, reportId) {
             const pass = score >= 17;
-            document.getElementById('reportId').textContent = `DPW-REP-${Math.floor(Math.random()*90000) + 10000}`;
+            document.getElementById('reportId').textContent = reportId;
             document.getElementById('repName').textContent = userData.name;
             document.getElementById('repDiv').textContent = userData.division;
             document.getElementById('repScore').textContent = `${Math.round((score/20)*100)}% (${score}/20)`;
