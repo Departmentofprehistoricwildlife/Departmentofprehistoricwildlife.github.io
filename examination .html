@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DPW | Official Examination Portal</title>
+	<link rel="icon" type="image/png" href="/DPW.png">
+    <link rel="shortcut icon" href="DPW.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Segoe+UI:wght@400;600;700&display=swap');
+
+        :root {
+            --dpw-blue: #1e3a8a;
+            --dpw-light-blue: #f0f7ff;
+            --dpw-border: #cbd5e1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffffff;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        .official-seal {
+            border: 4px double var(--dpw-blue);
+            padding: 10px;
+            display: inline-block;
+            transform: rotate(-5deg);
+            opacity: 0.8;
+        }
+
+        .hidden-section { display: none; }
+        
+        .print-only { display: none; }
+        
+        @media print {
+            .no-print { display: none; }
+            .print-only { display: block; }
+            .card { border: none; box-shadow: none; }
+        }
+
+        .exam-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .question-card {
+            border-left: 4px solid var(--dpw-blue);
+            padding-left: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+
+    <!-- Official Header -->
+    <header class="bg-white border-b-2 border-blue-900 p-6 no-print">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <div class="bg-blue-900 p-3 rounded">
+                    <i class="fa-solid fa-building-columns text-white text-3xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight text-blue-900 uppercase">Department of Prehistoric Wildlife</h1>
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-widest">Official Personnel Examination & Licensing Division</p>
+                </div>
+            </div>
+            <div class="text-right hidden md:block">
+                <p class="text-sm font-bold text-red-600">OFFLINE MODE ACTIVE</p>
+                <p class="text-xs text-slate-400">Station ID: DPW-772-B</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto p-8">
+        
+        <!-- Section: Landing/Registration -->
+        <section id="section-landing" class="space-y-8">
+            <div class="bg-white p-8 border border-slate-200 shadow-sm rounded-lg">
+                <h2 class="text-xl font-bold text-blue-900 border-b pb-4 mb-6 uppercase">Candidate Registration</h2>
+                <form id="regForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold uppercase text-slate-600">Legal Full Name</label>
+                        <input type="text" id="fullName" class="w-full p-3 bg-slate-50 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold uppercase text-slate-600">Employee ID / Serial No.</label>
+                        <input type="text" id="empId" class="w-full p-3 bg-slate-50 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none" placeholder="DPW-XXXX-XX">
+                    </div>
+                    <div class="md:col-span-2 space-y-2">
+                        <label class="text-sm font-bold uppercase text-slate-600">Departmental Division</label>
+                        <select id="division" class="w-full p-3 bg-slate-50 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                            <option>High-Risk Containment (Apex Predators)</option>
+                            <option>Paleo-Veterinary Medicine</option>
+                            <option>Chronological Security & Integrity</option>
+                            <option>Aquatic Pleistocene Management</option>
+                        </select>
+                    </div>
+                    <div class="md:col-span-2 pt-4">
+                        <button type="button" onclick="goToInstructions()" class="w-full bg-blue-900 text-white py-4 font-bold rounded hover:bg-blue-800 transition uppercase tracking-widest">
+                            Proceed to Instructions
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Section: Full Page Instructions -->
+        <section id="section-instructions" class="hidden-section space-y-6">
+            <div class="bg-white p-10 border border-slate-200 shadow-sm rounded-lg">
+                <h2 class="text-2xl font-bold text-blue-900 border-b-4 border-blue-900 pb-2 mb-8 uppercase">Examination Protocol & Instructions</h2>
+                
+                <div class="space-y-6 text-slate-700">
+                    <div class="flex items-start space-x-4">
+                        <span class="bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded">01</span>
+                        <div>
+                            <h3 class="font-bold text-lg">General Conduct</h3>
+                            <p>This is a closed-book, high-integrity examination. You are authorized to use the provided workstation only. Any attempt to access external data or communicate with other personnel will result in immediate termination of the application and possible disciplinary action under the Prehistoric Wildlife Act.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <span class="bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded">02</span>
+                        <div>
+                            <h3 class="font-bold text-lg">Examination Scope</h3>
+                            <p>The exam consists of twenty (20) intermediate to advanced level questions covering: Advanced Taxonomy, Paddock Ballistics, Sedation Pharmacokinetics, and Emergency Breach Management. A passing grade of 85% (17/20) is required for Division Clearance.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <span class="bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded">03</span>
+                        <div>
+                            <h3 class="font-bold text-lg">Time Management</h3>
+                            <p>Candidates are allotted exactly 20 minutes. The system will automatically lock and submit all recorded answers upon timer expiration. There are no extensions for "Slow Movers" or unexpected equipment failure.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <span class="bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded">04</span>
+                        <div>
+                            <h3 class="font-bold text-lg">Reporting Procedures</h3>
+                            <p>Upon completion, a formal Examination Report will be generated. This document is the property of the DPW and must be signed by the Director of Operations before Field Licensing is granted.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 p-6 bg-blue-50 border border-blue-100 rounded text-center">
+                    <p class="mb-4 font-semibold text-blue-900 italic">"Security is a legacy of vigilance."</p>
+                    <button onclick="startExam()" class="bg-blue-900 text-white px-12 py-4 font-bold rounded hover:bg-blue-800 transition uppercase">
+                        Confirm & Start Examination
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: 20 Question Exam -->
+        <section id="section-exam" class="hidden-section">
+            <div class="flex justify-between items-center mb-6 sticky top-24 bg-slate-50 py-2 z-40">
+                <h2 class="text-xl font-bold text-blue-900 uppercase">Field Competency Exam [B-Level]</h2>
+                <div id="timer" class="bg-white border-2 border-red-600 text-red-600 px-6 py-2 rounded font-mono font-bold text-xl">
+                    20:00
+                </div>
+            </div>
+            
+            <div id="examContainer" class="space-y-8 bg-white p-8 border rounded-lg shadow-sm">
+                <!-- 20 Questions injected here -->
+            </div>
+
+            <div class="mt-12 pb-12">
+                <button onclick="submitExam()" class="w-full bg-blue-900 text-white py-5 font-bold rounded-lg hover:bg-blue-800 shadow-xl text-xl uppercase tracking-widest">
+                    Submit Final Responses
+                </button>
+            </div>
+        </section>
+
+        <!-- Section: Sealed Official Report -->
+        <section id="section-report" class="hidden-section">
+            <div class="bg-white border-2 border-slate-300 p-12 shadow-2xl relative max-w-4xl mx-auto">
+                <!-- Watermark -->
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03]">
+                    <i class="fa-solid fa-dragon text-[400px]"></i>
+                </div>
+
+                <div class="flex justify-between items-start mb-12">
+                    <div class="space-y-1">
+                        <h2 class="text-3xl font-black text-slate-800 uppercase leading-none">Examination Report</h2>
+                        <p class="text-sm font-bold text-blue-900 italic">Document ID: <span id="reportId"></span></p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs font-bold uppercase text-slate-400">Classified: Level 3</p>
+                        <p class="text-xs font-bold uppercase text-slate-400">Department of Prehistoric Wildlife</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-8 mb-12 border-y py-8">
+                    <div>
+                        <p class="text-xs uppercase font-bold text-slate-400 mb-1">Candidate Name</p>
+                        <p class="text-lg font-bold text-slate-800" id="repName"></p>
+                    </div>
+                    <div>
+                        <p class="text-xs uppercase font-bold text-slate-400 mb-1">Division Assignment</p>
+                        <p class="text-lg font-bold text-slate-800" id="repDiv"></p>
+                    </div>
+                    <div>
+                        <p class="text-xs uppercase font-bold text-slate-400 mb-1">Examination Score</p>
+                        <p class="text-2xl font-black text-blue-900" id="repScore"></p>
+                    </div>
+                    <div>
+                        <p class="text-xs uppercase font-bold text-slate-400 mb-1">Qualification Status</p>
+                        <p class="text-2xl font-black" id="repStatus"></p>
+                    </div>
+                </div>
+
+                <div class="space-y-4 mb-16">
+                    <h3 class="font-bold text-slate-700 uppercase text-sm border-b">Director's Remarks</h3>
+                    <p class="text-slate-600 italic" id="directorNote">
+                        Candidate has demonstrated requisite cognitive ability to manage Pleistocene-class entities under stress. Subject is cleared for secondary field training pending psych-eval.
+                    </p>
+                </div>
+
+                <div class="flex justify-between items-end mt-20">
+                    <div class="text-center w-64 border-t-2 border-slate-800 pt-2">
+                        <p class="text-xs font-bold uppercase">Candidate Signature</p>
+                    </div>
+                    <div class="relative">
+                        <!-- Director Seal -->
+                        <div class="official-seal border-red-700 text-red-700 font-bold uppercase text-center -mb-8 mr-4">
+                            <p class="text-[8px]">Office of the Director</p>
+                            <p class="text-xs">SEALED & APPROVED</p>
+                            <p class="text-[8px]">DPW HQ - HQ-P10</p>
+                        </div>
+                        <div class="text-center w-64 border-t-2 border-slate-800 pt-2">
+                            <p class="text-sm font-bold uppercase italic font-serif">A. Sterling</p>
+                            <p class="text-[10px] font-bold uppercase text-slate-500">Director of Operations</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 flex justify-center no-print">
+                    <button onclick="window.print()" class="bg-slate-800 text-white px-8 py-3 rounded font-bold hover:bg-slate-700">
+                        <i class="fa-solid fa-print mr-2"></i> Print Official Report
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        let userData = {};
+        let timerInterval;
+
+        const hardQuestions = [
+            { q: "Calculate the necessary dosage of M-99 for a 6,000kg Triceratops exhibiting Acute Hyper-Aggression Syndrome.", o: ["5mg", "15mg", "45mg", "120mg"], a: 2 },
+            { q: "Identify the primary structural weakness in standard 'Level 4' Graphene-Reinforced Paddocks.", o: ["Tensile fatigue", "Joint oxidation", "Resonant frequency vulnerability", "Thermal expansion"], a: 2 },
+            { q: "Which geological epoch transition is most associated with the 'Great Pleistocene Die-off'?", o: ["Pliocene-Pleistocene", "Pleistocene-Holocene", "Oligocene-Miocene", "Eocene-Oligocene"], a: 1 },
+            { q: "In the event of a Pterosaur escape, what is the 'Ground-Zero' radius for sonic-deterrent deployment?", o: ["100m", "500m", "1km", "Non-variable"], a: 1 },
+            { q: "What is the secondary function of the dorsal plates in Stegosaurus stenops as per latest DPW thermal scans?", o: ["Defense", "Sexual display", "Thermoregulation", "Acoustic amplification"], a: 2 },
+            { q: "Which chemical compound is strictly prohibited in the proximity of Mosasaurus habitats?", o: ["Sodium Chloride", "Petroleum-based lubricants", "Nitrogen fertilizers", "All of the above"], a: 3 },
+            { q: "Define 'Kleptoparasitism' in the context of Spinosaurus aegyptiacus field interactions.", o: ["Nesting behavior", "Stealing prey from others", "Symbiotic grooming", "Egg consumption"], a: 1 },
+            { q: "What is the mandatory caliber for field-agent sidearms when dealing with 'Pack Hunters'?", o: ["9mm", ".45 ACP", ".500 Magnum", "Non-lethal EMP only"], a: 2 },
+            { q: "Explain the 'Red Queen' hypothesis regarding the evolution of prehistoric predator-prey dynamics.", o: ["Fixed evolution", "Continuous adaptation to stay relevant", "Extinction of the weakest", "Dominance of the largest"], a: 1 },
+            { q: "Which fossilized evidence confirms the presence of integumentary structures (feathers) in Dromaeosauridae?", o: ["Quill knobs on ulna", "Preserved melanosomes", "Soft tissue impressions", "All of the above"], a: 3 },
+            { q: "In a 'Grid Failure' scenario, what is the half-life of backup battery arrays in Sector 4?", o: ["2 hours", "6 hours", "12 hours", "24 hours"], a: 1 },
+            { q: "What is the 'Tactical Retreat' distance when a Smilodon fatalis enters a 'Crouched' posture within 20 meters?", o: ["No retreat possible", "Back away slowly", "Run in zig-zag", "Sudden loud noise deployment"], a: 0 },
+            { q: "Identify the metabolic rate of an infant sauropod during the first growth spurt.", o: ["2x baseline", "5x baseline", "10x baseline", "20x baseline"], a: 2 },
+            { q: "Which gas is used for 'Atmospheric Stabilization' in the Carboniferous insect conservatory?", o: ["35% Oxygen", "21% Oxygen", "15% Oxygen", "80% Nitrogen"], a: 0 },
+            { q: "What is the protocol for 'Unidentified Spoor' found in the secure sector?", o: ["Report to Director", "Sanitize area", "Sample & Track", "Ignore if <10cm"], a: 2 },
+            { q: "Define the term 'Ghost Lineage' in phylogenetic analysis.", o: ["Extinct species", "Missing fossil record gap", "Genetic mutation", "Hybridized species"], a: 1 },
+            { q: "What is the primary cause of 'Paddock Rot' in Megatherium enclosures?", o: ["Bacterial fungus", "Lack of UV-B", "Excessive moisture", "Inadequate dietary fiber"], a: 2 },
+            { q: "The 'Bone-Crushing' bite force of Pachycrocuta is measured at approximately:", o: ["500 PSI", "1000 PSI", "2000 PSI", "5000 PSI"], a: 2 },
+            { q: "What is the mandatory quarantine period for new 'Resurrected' specimens?", o: ["7 days", "30 days", "90 days", "180 days"], a: 2 },
+            { q: "Which authority has final say on 'Specimen Termination' during a mass containment breach?", o: ["Lead Scientist", "Field Agent", "The Director", "Military Liaison"], a: 2 }
+        ];
+
+        function showSection(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden-section'));
+            document.getElementById(`section-${id}`).classList.remove('hidden-section');
+            window.scrollTo(0,0);
+        }
+
+        function goToInstructions() {
+            const name = document.getElementById('fullName').value;
+            const id = document.getElementById('empId').value;
+            if(!name || !id) return alert("All identification fields are mandatory.");
+            
+            userData = { name, id, division: document.getElementById('division').value };
+            showSection('instructions');
+        }
+
+        function startExam() {
+            renderQuestions();
+            showSection('exam');
+            startTimer();
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('examContainer');
+            container.innerHTML = hardQuestions.map((q, i) => `
+                <div class="question-card">
+                    <p class="font-bold text-slate-800 mb-4">${i+1}. ${q.q}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        ${q.o.map((opt, oi) => `
+                            <label class="flex items-center p-3 border rounded border-slate-200 hover:bg-blue-50 cursor-pointer transition">
+                                <input type="radio" name="q${i}" value="${oi}" class="w-4 h-4 text-blue-900">
+                                <span class="ml-3 text-sm font-medium text-slate-700">${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function startTimer() {
+            let timeLeft = 1200; // 20 mins
+            const timerEl = document.getElementById('timer');
+            timerInterval = setInterval(() => {
+                const m = Math.floor(timeLeft / 60);
+                const s = timeLeft % 60;
+                timerEl.textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                if(timeLeft <= 0) { clearInterval(timerInterval); submitExam(); }
+                timeLeft--;
+            }, 1000);
+        }
+
+        function submitExam() {
+            clearInterval(timerInterval);
+            let score = 0;
+            hardQuestions.forEach((q, i) => {
+                const sel = document.querySelector(`input[name="q${i}"]:checked`);
+                if(sel && parseInt(sel.value) === q.a) score++;
+            });
+
+            const pass = score >= 17;
+            document.getElementById('reportId').textContent = `DPW-REP-${Math.floor(Math.random()*90000) + 10000}`;
+            document.getElementById('repName').textContent = userData.name;
+            document.getElementById('repDiv').textContent = userData.division;
+            document.getElementById('repScore').textContent = `${Math.round((score/20)*100)}% (${score}/20)`;
+            document.getElementById('repStatus').textContent = pass ? 'QUALIFIED' : 'FAILED';
+            document.getElementById('repStatus').className = `text-2xl font-black ${pass ? 'text-green-600' : 'text-red-600'}`;
+            
+            if(!pass) {
+                document.getElementById('directorNote').textContent = "Candidate has failed to meet the minimum safety threshold for field operations. Immediate retraining is mandatory. Deployment access denied.";
+            }
+
+            showSection('report');
+        }
+    </script>
+</body>
+</html>
